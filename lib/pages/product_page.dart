@@ -1,4 +1,5 @@
-import 'package:djcateringapps/widget/list_category.dart';
+import 'package:djcateringapps/widget/product_items.dart';
+import 'package:djcateringapps/widget/top_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -8,46 +9,61 @@ class ProductPage extends StatefulWidget {
 }
 
 class ProductPageState extends State<ProductPage> {
-
+  final ScrollController scrollController = ScrollController();
+  bool isVisible = true;
 
   @override
   void initState() {
     super.initState();
-    
-  
+    scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (isVisible)
+          setState(() {
+            isVisible = false;
+          });
+      }
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        if (!isVisible)
+          setState(() {
+            isVisible = true;
+          });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBox) {
-          return <Widget>[
-            SliverAppBar(
-              backgroundColor: Colors.orange,
-              automaticallyImplyLeading: true,
-              expandedHeight: 200,
-              floating: false,
-              pinned: true,
-              centerTitle: true,
-              title: Text("Home"),
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: false,
-                collapseMode: CollapseMode.none,
-                background: new Center(
-                  child: Text('hello world'),
-                ),
-              ),
-            ),
-          ];
-        },
-        body: GridView.count(
-          crossAxisCount: 2,
-          children: <Widget>[
-            Container(
-              height: 40,
-              color: Colors.amber,
-            ),
-          ],
-        ));
+    final double itemHeight = (180) / 2;
+    final double itemWidth = 100 / 2;
+    return Column(
+      children: <Widget>[
+        TopNavbar(isVisible),
+        Expanded(
+          child: Container(
+            margin:
+                EdgeInsets.only(top: isVisible ? 10 : 5, left: 15, right: 15),
+            height: MediaQuery.of(context).size.height,
+            child: GridView.count(
+                childAspectRatio: itemWidth / itemHeight,
+                controller: scrollController,
+                crossAxisCount: 2,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                children: <Widget>[
+                  ProductItems(),
+                  ProductItems(),
+                  ProductItems(),
+                  ProductItems(),
+                  ProductItems(),
+                  ProductItems(),
+                  ProductItems(),
+                  ProductItems(),
+                ]),
+          ),
+        ),
+      ],
+    );
   }
 }
