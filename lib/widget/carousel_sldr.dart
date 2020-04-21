@@ -1,13 +1,10 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:djcateringapps/utilities/responsive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CarouselSldr extends StatelessWidget {
-  final ResponsiveLayout responsiveLayout;
-
-  const CarouselSldr({Key key, this.responsiveLayout}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {

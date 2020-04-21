@@ -1,4 +1,3 @@
-import 'package:djcateringapps/utilities/responsive_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,15 +18,15 @@ class ProductItems extends StatelessWidget {
       padding: EdgeInsets.all(10.0),
       child: Column(
         children: <Widget>[
-          Image.network(
-              "https://www.mawarsaribakery.com/wp-content/uploads/2015/09/1.png"),
+          Image.network(productImage,height: 120,fit: BoxFit.cover,),
+          SizedBox(height: 10),
           Text(
-            'Slice Stawberry Cheese cake',
+            productName,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
           Text(
-            'Rp 6.000,00/1',
+            price,
             style: TextStyle(color: Colors.grey.withOpacity(0.8), fontSize: 11),
           ),
           SizedBox(height: 10),

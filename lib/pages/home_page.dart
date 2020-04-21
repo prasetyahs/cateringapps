@@ -1,4 +1,3 @@
-import 'package:djcateringapps/utilities/responsive_layout.dart';
 import 'package:djcateringapps/widget/carousel_sldr.dart';
 import 'package:djcateringapps/widget/product_popular_items.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,19 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatelessWidget {
-  final ResponsiveLayout responsiveLayout;
-
-  const HomePage({Key key, this.responsiveLayout}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    responsiveLayout.responsiveSettings();
     return Container(
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             CarouselSldr(
-              responsiveLayout: responsiveLayout,
+            
             ),
             Container(
               child: Column(
@@ -51,7 +45,7 @@ class HomePage extends StatelessWidget {
                       child: ListView.builder(
                           itemCount: 7,
                           itemBuilder: (context, index) => ProductPopularItems(
-                              responsiveLayout: responsiveLayout)),
+                      )),
                     )
                   ]),
             )

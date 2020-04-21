@@ -1,7 +1,14 @@
+import 'package:djcateringapps/model/product/product.dart';
+import 'package:djcateringapps/model/product/products.dart';
+import 'package:djcateringapps/provider/index_provider.dart';
+import 'package:djcateringapps/repository/base_url.dart';
+import 'package:djcateringapps/repository/product_repository.dart';
 import 'package:djcateringapps/widget/product_items.dart';
 import 'package:djcateringapps/widget/top_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -10,8 +17,9 @@ class ProductPage extends StatefulWidget {
 
 class ProductPageState extends State<ProductPage> {
   final ScrollController scrollController = ScrollController();
+  ProductRepository productRepository = ProductRepository();
+  Products _products;
   bool isVisible = true;
-
   @override
   void initState() {
     super.initState();
@@ -35,33 +43,58 @@ class ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double itemHeight = (180) / 2;
-    final double itemWidth = 100 / 2;
+    final double itemHeight = (ScreenUtil().setHeight(180)) / 2;
+    final double itemWidth = ScreenUtil().setWidth(110) / 2;
     return Column(
       children: <Widget>[
-        TopNavbar(isVisible),
+        Consumer<IndexProvider>(
+            builder: (context, value, child) => value.products != null
+                ? TopNavbar(
+                    productFound: value.products.row,
+                    isVisible: isVisible,
+                  )
+                : TopNavbar(
+                    productFound: 0,
+                    isVisible: isVisible,
+                  )),
         Expanded(
           child: Container(
-            margin:
-                EdgeInsets.only(top: isVisible ? 10 : 5, left: 15, right: 15),
-            height: MediaQuery.of(context).size.height,
-            child: GridView.count(
-                childAspectRatio: itemWidth / itemHeight,
-                controller: scrollController,
-                crossAxisCount: 2,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                children: <Widget>[
-                  ProductItems(),
-                  ProductItems(),
-                  ProductItems(),
-                  ProductItems(),
-                  ProductItems(),
-                  ProductItems(),
-                  ProductItems(),
-                  ProductItems(),
-                ]),
-          ),
+              margin:
+                  EdgeInsets.only(top: isVisible ? 10 : 5, left: 15, right: 15),
+              height: MediaQuery.of(context).size.height,
+              child: Consumer<IndexProvider>(builder: (context, value, child) {
+                if (value.products == null) {
+                  value.setProductAll();
+                }
+                return value.products != null
+                    ? GridView.builder(
+                        controller: scrollController,
+                        itemCount: value.products.row,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: itemWidth / itemHeight,
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10.0,
+                          mainAxisSpacing: 10.0,
+                        ),
+                        itemBuilder: (context, index) => ProductItems(
+                              productName: value.products.product
+                                  .elementAt(index)
+                                  .productName,
+                              productImage: BaseUrl.BASE_URL_IMAGE +
+                                  value.products.product
+                                      .elementAt(index)
+                                      .productImage,
+                              productDesc: value.products.product
+                                  .elementAt(index)
+                                  .productDescription,
+                              price: "Rp " +
+                                  value.products.product
+                                      .elementAt(index)
+                                      .price +
+                                  ",00",
+                            ))
+                    : Center(child: CircularProgressIndicator());
+              })),
         ),
       ],
     );

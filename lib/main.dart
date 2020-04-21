@@ -1,7 +1,8 @@
-import 'package:djcateringapps/pages/index_page.dart';
+import 'package:djcateringapps/index_page.dart';
 import 'package:djcateringapps/pages/landingpage.dart';
 import 'package:djcateringapps/pages/login_page.dart';
 import 'package:djcateringapps/pages/register_page.dart';
+import 'package:djcateringapps/provider/index_provider.dart';
 import 'package:djcateringapps/provider/login_provider.dart';
 import 'package:djcateringapps/provider/register_provider.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,10 @@ class MainApp extends StatelessWidget {
               value: LoginProvider(),
               child: LoginPage(),
             ),
-        '/homePage': (context) => IndexPage(),
+        '/homePage': (context) => ChangeNotifierProvider.value(
+              value: IndexProvider(),
+              child: IndexPage(),
+            ),
         '/registerPage': (context) => ChangeNotifierProvider.value(
             value: RegisterProvider(), child: RegisterPage()),
       },

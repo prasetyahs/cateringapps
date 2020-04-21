@@ -1,8 +1,12 @@
 import 'package:badges/badges.dart';
 import 'package:djcateringapps/pages/home_page.dart';
+import 'package:djcateringapps/pages/order_page.dart';
 import 'package:djcateringapps/pages/product_page.dart';
+import 'package:djcateringapps/pages/profile_page.dart';
+import 'package:djcateringapps/provider/index_provider.dart';
 import 'package:djcateringapps/utilities/responsive_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class IndexPage extends StatefulWidget {
   @override
@@ -28,23 +32,35 @@ class IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> listMenu = [
-      HomePage(
-        responsiveLayout: responsiveLayout,
-      ),
-      ProductPage()
+      HomePage(),
+      ProductPage(),
+      OrderPage(),
+      ProfilePage()
     ];
     return Scaffold(
         backgroundColor: Color.fromRGBO(240, 240, 240, 257),
+        resizeToAvoidBottomInset: false,
         body: listMenu.elementAt(_selectIndex),
         appBar: AppBar(
           elevation: 0,
+          centerTitle: true,
           backgroundColor: Colors.redAccent,
-          title: Text('DJCatering'),
+          title: Text('DJ Catering'),
+          leading: Consumer<IndexProvider>(
+            builder: (context, value, child) => InkWell(
+                onTap: () => {
+                      value.logout(),
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/', (route) => false)
+                    },
+                child:
+                    Tooltip(message: 'Logout', child: Icon(Icons.exit_to_app))),
+          ),
           actions: <Widget>[
             Container(
               margin: EdgeInsets.only(right: 15),
               child: Badge(
-                badgeColor: Colors.redAccent,
+                badgeColor: Colors.grey,
                 badgeContent: Text(
                   '3',
                   style: TextStyle(color: Colors.white),
