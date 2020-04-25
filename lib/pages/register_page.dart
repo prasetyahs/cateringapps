@@ -3,13 +3,54 @@ import 'package:djcateringapps/utilities/responsive_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => RegisterPageState();
+}
+
+class RegisterPageState extends State<RegisterPage> {
   final username = TextEditingController();
   final password = TextEditingController();
   final name = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final FocusNode _usernameFocus = FocusNode();
+  final FocusNode _passwordFucos = FocusNode();
+  final FocusNode _nameFocus = FocusNode();
+  ProgressDialog pr;
+
+  @override
+  void initState() {
+    super.initState();
+    pr = new ProgressDialog(context);
+    pr.style(
+        message: "Mohon Tunggu",
+        backgroundColor: Colors.white,
+        elevation: 10.0,
+        progressTextStyle: TextStyle(
+            color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w400),
+        messageTextStyle: TextStyle(
+            color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w400),
+        progressWidget: Container(
+            padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+        insetAnimCurve: Curves.easeInOut);
+  }
+
+  Future<bool> showDialog() async {
+    return await pr.show();
+  }
+
+  hideDialog() async {
+    return await pr.hide();
+  }
+
+  _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +115,10 @@ class RegisterPage extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(top: 15),
                         child: TextFormField(
+                          focusNode: _nameFocus,
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (val) => _fieldFocusChange(
+                              context, _nameFocus, _usernameFocus),
                           controller: name,
                           validator: (val) =>
                               val.isEmpty ? '*Name Required' : null,
@@ -85,7 +130,9 @@ class RegisterPage extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(top: 15),
                         child: TextFormField(
+                          focusNode: _usernameFocus,
                           controller: username,
+                          onFieldSubmitted: (val)=>_fieldFocusChange(context, _usernameFocus, _passwordFucos),
                           validator: (val) =>
                               val.isEmpty ? '*Username Required' : null,
                           decoration: InputDecoration(
@@ -98,6 +145,7 @@ class RegisterPage extends StatelessWidget {
                         margin: EdgeInsets.only(top: 15),
                         child: TextFormField(
                           controller: password,
+                          focusNode: _passwordFucos,
                           validator: (value) =>
                               value.isEmpty ? '*Password Required' : null,
                           obscureText: true,
@@ -115,7 +163,8 @@ class RegisterPage extends StatelessWidget {
                             "Sudah Punya Akun ?",
                             style: TextStyle(color: Colors.blueAccent),
                           ),
-                          onTap: ()=>Navigator.pushNamed(context, '/loginPage'),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/loginPage'),
                         ),
                       ),
                       Container(

@@ -5,12 +5,15 @@ import 'dart:convert';
 
 class ProductRepository {
   Future<Products> readAllProduct() async {
-    final response = await http.get(BaseUrl.BASE_URL + 'product');
-
-    if (response.statusCode == 200) {
-      return Products.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load');
+    try {
+      final response = await http.get(BaseUrl.BASE_URL + 'product');
+      if (response.statusCode == 200) {
+        return Products.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load');
+      }
+    } catch (err) {
+      throw Exception(err);
     }
   }
 }

@@ -11,9 +11,7 @@ class HomePage extends StatelessWidget {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CarouselSldr(
-            
-            ),
+            CarouselSldr(),
             Container(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +24,7 @@ class HomePage extends StatelessWidget {
                         children: <Widget>[
                           Container(
                             child: Text(
-                              'Populer Produk',
+                              'Beberapa Produk',
                               style:
                                   TextStyle(fontSize: ScreenUtil().setSp(13)),
                             ),
@@ -45,7 +43,8 @@ class HomePage extends StatelessWidget {
                       child: ListView.builder(
                           itemCount: 7,
                           itemBuilder: (context, index) => ProductPopularItems(
-                      )),
+                                widthImage: ScreenUtil().setWidth(120),
+                              )),
                     )
                   ]),
             )

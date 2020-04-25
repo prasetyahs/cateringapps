@@ -7,6 +7,7 @@ class IndexProvider extends ChangeNotifier {
   ProductRepository _productRepository = ProductRepository();
   Products _products;
   SharedPref sharedPref = SharedPref();
+
   setProductAll() {
     _productRepository.readAllProduct().then((value) {
       _products = Products(product: value.product, row: value.row);

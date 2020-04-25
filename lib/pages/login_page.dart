@@ -14,6 +14,8 @@ class LoginPageState extends State<LoginPage> {
   final username = TextEditingController();
   final password = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final FocusNode _usernameFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
   final usersRepo = LoginProvider();
   ProgressDialog pr;
 
@@ -40,6 +42,12 @@ class LoginPageState extends State<LoginPage> {
 
   hideDialog() async {
     return await pr.hide();
+  }
+
+  _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   @override
@@ -107,7 +115,13 @@ class LoginPageState extends State<LoginPage> {
                       Container(
                         margin: EdgeInsets.only(top: 15),
                         child: TextFormField(
+                          focusNode: _usernameFocus,
+                          onFieldSubmitted: (term) {
+                            _fieldFocusChange(
+                                context, _usernameFocus, _passwordFocus);
+                          },
                           controller: username,
+                          textInputAction: TextInputAction.next,
                           validator: (val) =>
                               val.isEmpty ? '*Username Required' : null,
                           decoration: InputDecoration(
@@ -117,18 +131,45 @@ class LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 15),
-                        child: TextFormField(
-                          controller: password,
-                          validator: (value) =>
-                              value.isEmpty ? '*Password Required' : null,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.lock),
-                              hintText: 'Password'),
-                          textAlignVertical: TextAlignVertical.bottom,
-                        ),
-                      )
+                          margin: EdgeInsets.only(top: 15),
+                          child: Consumer<LoginProvider>(
+                            builder: (BuildContext context, LoginProvider value,
+                                    Widget child) =>
+                                TextFormField(
+                              focusNode: _passwordFocus,
+                              textInputAction: TextInputAction.done,
+                              controller: password,
+                              onFieldSubmitted: (term) {
+                                if (formKey.currentState.validate()) {
+                                  showDialog().then((valueDialog) => {
+                                        value
+                                            .onLogin(
+                                                username.text, password.text)
+                                            .then((value) => value.auth !=
+                                                        null &&
+                                                    value.auth &&
+                                                    value.data != null
+                                                ? Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                        context,
+                                                        '/homePage',
+                                                        (route) => false)
+                                                : null)
+                                            .whenComplete(() => hideDialog())
+                                      });
+                                } else {
+                                  hideDialog();
+                                }
+                              },
+                              validator: (value) =>
+                                  value.isEmpty ? '*Password Required' : null,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.lock),
+                                  hintText: 'Password'),
+                              textAlignVertical: TextAlignVertical.bottom,
+                            ),
+                          ))
                     ],
                   )),
               Container(

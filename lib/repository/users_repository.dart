@@ -7,22 +7,30 @@ import 'base_url.dart';
 
 class UsersRepository {
   Future<Login> usersLogin(username, password) async {
-    final response = await http.post(BaseUrl.BASE_URL + 'login',
-        body: {'username': username, 'password': password});
-    if (response.statusCode == 200) {
-      return Login.fromJson(convert.jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load');
+    try {
+      final response = await http.post(BaseUrl.BASE_URL + 'login',
+          body: {'username': username, 'password': password});
+      if (response.statusCode == 200) {
+        return Login.fromJson(convert.jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load');
+      }
+    } catch (err) {
+      throw Exception(err);
     }
   }
 
   Future<PostResponse> usersRegister(username, password, name) async {
-    final response = await http.post(BaseUrl.BASE_URL + 'register',
-        body: {'username': username, 'password': password, 'name': name});
-    if (response.statusCode == 200) {
-      return PostResponse.fromJson(convert.jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load');
+    try {
+      final response = await http.post(BaseUrl.BASE_URL + 'register',
+          body: {'username': username, 'password': password, 'name': name});
+      if (response.statusCode == 200) {
+        return PostResponse.fromJson(convert.jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load');
+      }
+    } catch (err) {
+      throw Exception(err);
     }
   }
 }

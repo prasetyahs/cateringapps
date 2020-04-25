@@ -5,8 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductPopularItems extends StatelessWidget {
   final ResponsiveLayout responsiveLayout;
-
-  const ProductPopularItems({Key key, this.responsiveLayout}) : super(key: key);
+  final double widthImage;
+  const ProductPopularItems({Key key, this.responsiveLayout, this.widthImage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class ProductPopularItems extends StatelessWidget {
         children: <Widget>[
           Image.network(
             "https://assets-a2.kompasiana.com/items/album/2017/03/14/kue-indomie-2-58c7fbdc84afbdde0704279a.jpg?t=o&v=760",
-            width: ScreenUtil().setWidth(120),
+            width: widthImage,
             fit: BoxFit.cover,
           ),
           Container(

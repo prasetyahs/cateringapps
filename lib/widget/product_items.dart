@@ -1,15 +1,16 @@
+import 'package:djcateringapps/widget/add_cart_dialog_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductItems extends StatelessWidget {
   final String productName, productDesc, productImage, price;
 
-  const ProductItems({
-    this.productName,
-    this.productDesc,
-    this.productImage,
-    this.price,
-  });
+  const ProductItems(
+      {this.productName,
+      this.productDesc,
+      this.productImage,
+      this.price,
+     });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,11 @@ class ProductItems extends StatelessWidget {
       padding: EdgeInsets.all(10.0),
       child: Column(
         children: <Widget>[
-          Image.network(productImage,height: 120,fit: BoxFit.cover,),
+          Image.network(
+            productImage,
+            height: 120,
+            fit: BoxFit.cover,
+          ),
           SizedBox(height: 10),
           Text(
             productName,
@@ -34,7 +39,12 @@ class ProductItems extends StatelessWidget {
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(18.0),
                 side: BorderSide(color: Colors.red)),
-            onPressed: () {},
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) => Dialog(
+                      elevation: 10.0,
+                      child: AddCartDialogContent(productName: productName,productPrice: price,imageContent: productImage,),
+                    )),
             child: Text(
               'ADD TO CART',
               style: TextStyle(color: Colors.white, fontSize: 12),

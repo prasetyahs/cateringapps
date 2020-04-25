@@ -18,7 +18,6 @@ class ProductPage extends StatefulWidget {
 class ProductPageState extends State<ProductPage> {
   final ScrollController scrollController = ScrollController();
   ProductRepository productRepository = ProductRepository();
-  Products _products;
   bool isVisible = true;
   @override
   void initState() {
@@ -43,7 +42,7 @@ class ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double itemHeight = (ScreenUtil().setHeight(180)) / 2;
+    final double itemHeight = (ScreenUtil().setHeight(170)) / 2;
     final double itemWidth = ScreenUtil().setWidth(110) / 2;
     return Column(
       children: <Widget>[
