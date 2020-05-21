@@ -1,20 +1,27 @@
+import 'package:djcateringapps/provider/index_provider.dart';
 import 'package:djcateringapps/widget/add_cart_dialog_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductItems extends StatelessWidget {
-  final String productName, productDesc, productImage, price;
+  final String productName, productDesc, productImage, price, idProduct;
+  final double margin;
 
-  const ProductItems(
-      {this.productName,
-      this.productDesc,
-      this.productImage,
-      this.price,
-     });
+  const ProductItems({
+    this.productName,
+    this.productDesc,
+    this.productImage,
+    this.price,
+    this.idProduct,
+    this.margin
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 150,
+      margin: EdgeInsets.symmetric(horizontal:margin),
       color: Colors.white,
       padding: EdgeInsets.all(10.0),
       child: Column(
@@ -43,10 +50,17 @@ class ProductItems extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) => Dialog(
                       elevation: 10.0,
-                      child: AddCartDialogContent(productName: productName,productPrice: price,imageContent: productImage,),
+                      child: ChangeNotifierProvider.value(
+                        value: IndexProvider(),
+                        child: AddCartDialogContent(
+                            productName: productName,
+                            productPrice: price,
+                            idProduct: idProduct,
+                            imageContent: productImage),
+                      ),
                     )),
             child: Text(
-              'ADD TO CART',
+              'TAMBAH CART',
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
             color: Colors.redAccent,

@@ -13,7 +13,7 @@ class ProductRepository {
         throw Exception('Failed to load');
       }
     } catch (err) {
-      throw Exception(err);
+      throw Exception(err); 
     }
   }
 }

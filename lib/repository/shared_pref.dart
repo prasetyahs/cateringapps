@@ -19,7 +19,7 @@ class SharedPref {
 
   readDataUsers(String key) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(json.decode(prefs.getString(key)));
+    return json.decode(prefs.getString(key));
   }
 
   removeLogin(String key,String key2) async{

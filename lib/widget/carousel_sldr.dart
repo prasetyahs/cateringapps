@@ -9,7 +9,7 @@ class CarouselSldr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(200.0),
+      height: ScreenUtil().setHeight(300.0),
       child: Stack(
         children: <Widget>[
           CarouselSlider(
@@ -27,7 +27,7 @@ class CarouselSldr extends StatelessWidget {
               );
             }).toList(),
             options: CarouselOptions(
-              height: ScreenUtil().setHeight(200.0),
+              height: ScreenUtil().setHeight(300.0),
               aspectRatio: 16 / 9,
               viewportFraction: 1.0,
             ),

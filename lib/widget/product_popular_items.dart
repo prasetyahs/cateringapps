@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ProductPopularItems extends StatelessWidget {
   final ResponsiveLayout responsiveLayout;
   final double widthImage;
+
   const ProductPopularItems({Key key, this.responsiveLayout, this.widthImage})
       : super(key: key);
 
@@ -14,7 +15,7 @@ class ProductPopularItems extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 5, right: 15, left: 15),
       color: Colors.white,
-      height: ScreenUtil().setHeight(113),
+      height: ScreenUtil().setHeight(100),
       padding: EdgeInsets.all(5),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +29,7 @@ class ProductPopularItems extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,15 +37,9 @@ class ProductPopularItems extends StatelessWidget {
                       Text(
                         'Kue Ulang Tahun',
                         style: TextStyle(
-                            color: Colors.redAccent,
+                            color: Colors.black,
                             fontSize: ScreenUtil().setSp(15)),
                       ),
-                      Container(
-                          width: ScreenUtil().setWidth(210),
-                          child: Text(
-                            'lorem Ipsum has been the industry',
-                            style: TextStyle(fontSize: ScreenUtil().setSp(12)),
-                          )),
                     ],
                   ),
                   Text(

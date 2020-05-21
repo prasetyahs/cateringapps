@@ -61,9 +61,25 @@ class IndexPageState extends State<IndexPage> {
               margin: EdgeInsets.only(right: 15),
               child: Badge(
                 badgeColor: Colors.grey,
-                badgeContent: Text(
-                  '3',
-                  style: TextStyle(color: Colors.white),
+                badgeContent: Consumer<IndexProvider>(
+                  builder: (context, value, child) {
+                    return FutureBuilder(
+                      future: value.users(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          value.readNumRowsCart(
+                              snapshot.data.idUsers.toString());
+                          return Text(
+                            value.numRowsCart.toString(),
+                            style: TextStyle(color: Colors.white),
+                          );
+                        } else {
+                          return Text("0",
+                              style: TextStyle(color: Colors.white));
+                        }
+                      },
+                    );
+                  },
                 ),
                 position: BadgePosition.topRight(top: 5),
                 child: Icon(
