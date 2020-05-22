@@ -1,6 +1,5 @@
 import 'package:djcateringapps/model/login/data.dart';
 import 'package:djcateringapps/model/order/cart.dart';
-import 'package:djcateringapps/model/order/num_rows_cart.dart';
 import 'package:djcateringapps/model/order/sub_total.dart';
 import 'package:djcateringapps/model/product/products.dart';
 import 'package:djcateringapps/repository/order_repository.dart';
@@ -50,6 +49,7 @@ class IndexProvider extends ChangeNotifier {
   readNumRowsCart(idUsers) async{
     await _orderRepository.numRowsCart(idUsers).then((value) {
       _numRowsCart = value.result;
+      notifyListeners();
     });
   }
   
@@ -57,6 +57,8 @@ class IndexProvider extends ChangeNotifier {
 
   get cart => _cart;
 
+
+  
   get products => _products;
 
   get subTotal => _subTotal;
@@ -66,6 +68,8 @@ class IndexProvider extends ChangeNotifier {
   users() async => Data.fromJson(await sharedPref.readDataUsers("users"));
 
   get purchaseAmount => _purchaseAmount;
+
+
 
   void incrementPurchase() {
     _purchaseAmount++;

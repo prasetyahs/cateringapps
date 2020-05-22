@@ -59,32 +59,35 @@ class IndexPageState extends State<IndexPage> {
           actions: <Widget>[
             Container(
               margin: EdgeInsets.only(right: 15),
-              child: Badge(
-                badgeColor: Colors.grey,
-                badgeContent: Consumer<IndexProvider>(
-                  builder: (context, value, child) {
-                    return FutureBuilder(
-                      future: value.users(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          value.readNumRowsCart(
-                              snapshot.data.idUsers.toString());
-                          return Text(
-                            value.numRowsCart.toString(),
-                            style: TextStyle(color: Colors.white),
-                          );
-                        } else {
-                          return Text("0",
-                              style: TextStyle(color: Colors.white));
-                        }
-                      },
-                    );
-                  },
-                ),
-                position: BadgePosition.topRight(top: 5),
-                child: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
+              child: InkWell(
+                onTap: ()=>Navigator.pushNamed(context, 'cartPage'),
+                child: Badge(
+                  badgeColor: Colors.grey,
+                  badgeContent: Consumer<IndexProvider>(
+                    builder: (context, value, child) {
+                      return FutureBuilder(
+                        future: value.users(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            value.readNumRowsCart(
+                                snapshot.data.idUsers.toString());
+                            return Text(
+                              value.numRowsCart.toString(),
+                              style: TextStyle(color: Colors.white),
+                            );
+                          } else {
+                            return Text("0",
+                                style: TextStyle(color: Colors.white));
+                          }
+                        },
+                      );
+                    },
+                  ),
+                  position: BadgePosition.topRight(top: 5),
+                  child: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             )

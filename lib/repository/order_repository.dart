@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:djcateringapps/model/cart/users_cart.dart';
 import 'package:djcateringapps/model/order/cart.dart';
 import 'package:djcateringapps/model/order/num_rows_cart.dart';
 import 'package:djcateringapps/model/order/sub_total.dart';
@@ -53,8 +54,22 @@ class OrderRepository {
       } else {
         throw SocketException('Failed to load');
       }
-    } catch (err) {
-      throw SocketException(err);
+    } on SocketException catch (_) {
+      throw SocketException("Failed Load");
+    } on FormatException catch (_) {
+      throw SocketException("Failed Load");
+    }
+  }
+
+  Future<UsersCart> readCart(String idUsers) async {
+    final response =
+        await http.get(BaseUrl.BASE_URL + "cart/readCart?id_users=" + idUsers);
+       
+    if (response.statusCode == 200) {
+      
+      return UsersCart.fromJson(convert.jsonDecode(response.body));
+    }else{
+       throw SocketException('Failed to load');
     }
   }
 }
