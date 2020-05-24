@@ -45,7 +45,7 @@ class OrderRepository {
     }
   }
 
-  Future<NumRowsCart> numRowsCart(idUsers) async {
+  Future<NumRowsCart> numRowsCart(String idUsers) async {
     try {
       final response = await http.post(BaseUrl.BASE_URL + "cart/getnumrowcart",
           body: {'id_users': idUsers.toString()});
@@ -68,6 +68,16 @@ class OrderRepository {
     if (response.statusCode == 200) {
       
       return UsersCart.fromJson(convert.jsonDecode(response.body));
+    }else{
+       throw SocketException('Failed to load');
+    }
+  }
+
+  Future<Cart> deleteCart(String idCart) async{
+    final response = await http.get(BaseUrl.BASE_URL +"cart/deletecart?id_cart="+idCart);
+    
+    if(response.statusCode == 200){
+      return Cart.fromJson(convert.jsonDecode(response.body));
     }else{
        throw SocketException('Failed to load');
     }

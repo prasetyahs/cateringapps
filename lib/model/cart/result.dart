@@ -6,7 +6,7 @@ class Result {
   String productImage;
   String isOrder;
   String purchaseamount;
-
+  String idCart;
   Result(
       {this.idUsers,
       this.idProduct,
@@ -14,6 +14,7 @@ class Result {
       this.price,
       this.productImage,
       this.isOrder,
+      this.idCart,
       this.purchaseamount});
 
   Result.fromJson(Map<String, dynamic> json) {
@@ -23,6 +24,7 @@ class Result {
     price = json['price'];
     productImage = json['product_image'];
     isOrder = json['is_order'];
+    idCart = json['id_cart'];
     purchaseamount = json['purchaseamount'];
   }
 
@@ -32,6 +34,7 @@ class Result {
     data['id_product'] = this.idProduct;
     data['product_name'] = this.productName;
     data['price'] = this.price;
+    data['id_cart'] = this.idCart;
     data['product_image'] = this.productImage;
     data['is_order'] = this.isOrder;
     data['purchaseamount'] = this.purchaseamount;
