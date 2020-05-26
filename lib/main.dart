@@ -24,6 +24,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+          accentColor: Colors.transparent,
           primaryColor: Colors.red,
           textTheme: GoogleFonts.solwayTextTheme(Theme.of(context).textTheme)
               .copyWith(bodyText1: GoogleFonts.roboto())),

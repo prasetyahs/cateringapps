@@ -49,7 +49,7 @@ class IndexProvider extends ChangeNotifier {
   readNumRowsCart(idUsers) async{
     await _orderRepository.numRowsCart(idUsers).then((value) {
       _numRowsCart = value.result;
-      notifyListeners();
+     // notifyListeners();
     });
   }
   

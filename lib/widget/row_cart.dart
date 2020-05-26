@@ -8,7 +8,7 @@ import 'loading_dialog.dart';
 
 class RowCart extends StatelessWidget {
   final String productName, productImage, idCart;
-  final amount;
+  final String amount;
   final double totalPrice;
 
   const RowCart(
@@ -25,7 +25,7 @@ class RowCart extends StatelessWidget {
     return Container(
       height: ScreenUtil().setHeight(105),
       color: Colors.white,
-      margin: EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
+      margin: EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 10),
       padding: EdgeInsets.all(2),
       child: Column(
         children: [
@@ -41,7 +41,7 @@ class RowCart extends StatelessWidget {
                       padding: EdgeInsets.all(0),
                       icon: Icon(
                         Icons.close,
-                        size: 15,
+                        size: 16,
                       ),
                       onPressed: () {
                         showDialog(
@@ -95,38 +95,56 @@ class RowCart extends StatelessWidget {
             ),
             Row(
               children: [
-                SizedBox(
-                  width: ScreenUtil().setWidth(50),
-                  height: ScreenUtil().setHeight(50),
-                  child: FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      "-",
-                      style: TextStyle(
-                          fontSize: ScreenUtil().setSp(18),
-                          color: Colors.redAccent),
-                    ),
-                  ),
-                ),
                 Container(
                   padding: EdgeInsets.all(4),
-                  child: Text(amount.toString()),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(3)),
-                      border: Border.all(color: Colors.redAccent)),
-                ),
-                SizedBox(
-                  width: ScreenUtil().setWidth(50),
-                  height: ScreenUtil().setHeight(50),
-                  child: FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      "+",
-                      style: TextStyle(
-                          fontSize: ScreenUtil().setSp(18),
-                          color: Colors.redAccent),
-                    ),
-                  ),
+                  child:
+                      Consumer<CartProvider>(builder: (context, value, child) {
+                    return Row(
+                      children: [
+                        Container(
+                            width: ScreenUtil().setWidth(40),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFe0f2f1)),
+                            child: FloatingActionButton(
+                              heroTag: null,
+                                backgroundColor: Colors.red,
+                                onPressed: () {
+                                  value.amountIncrement(amount);
+
+                                  value.editAmountcart(
+                                      idCart, value.amount.toString());
+                                },
+                                child: Text(
+                                  '+',
+                                  textAlign: TextAlign.center,
+                                ))),
+                        Container(
+                            width: ScreenUtil().setWidth(40),
+                            child: Text(
+                              amount,
+                              textAlign: TextAlign.center,
+                            )),
+                        Container(
+                            width: ScreenUtil().setWidth(40),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFe0f2f1)),
+                            child: FloatingActionButton(
+                                heroTag: null,
+                                backgroundColor: Colors.red,
+                                onPressed: () {
+                                  value.amountDecrement(amount);
+                                  value.editAmountcart(
+                                      idCart, value.amount.toString());
+                                },
+                                child: Text(
+                                  '-',
+                                  textAlign: TextAlign.center,
+                                ))),
+                      ],
+                    );
+                  }),
                 ),
               ],
             )

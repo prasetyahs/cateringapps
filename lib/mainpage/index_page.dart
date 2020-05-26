@@ -44,7 +44,7 @@ class IndexPageState extends State<IndexPage> {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.red,
           title: Text('DJ Catering'),
           leading: Consumer<IndexProvider>(
             builder: (context, value, child) => InkWell(

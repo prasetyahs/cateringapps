@@ -9,6 +9,8 @@ class CartProvider extends ChangeNotifier {
   OrderRepository _orderRepository = OrderRepository();
   UsersCart _usersCart;
   SharedPref sharedPref = SharedPref();
+  int _amount = 0;
+
   Future<UsersCart> readCart(String idUsers) async {
     _usersCart = await _orderRepository.readCart(idUsers);
     return _usersCart;
@@ -21,4 +23,24 @@ class CartProvider extends ChangeNotifier {
   }
 
   users() async => Data.fromJson(await sharedPref.readDataUsers("users"));
+
+  Future<Cart> editAmountcart(String idCart, String amount) async {
+    Cart _cart = await _orderRepository.editAmountCart(idCart, amount);
+    notifyListeners();
+    return _cart;
+  }
+
+  void amountIncrement(String lastAmount) {
+    _amount = int.parse(lastAmount);
+    _amount++;
+    notifyListeners();
+  }
+
+  void amountDecrement(String lastAmount) {
+    _amount = int.parse(lastAmount);
+    _amount--;
+    notifyListeners();
+  }
+
+  get amount => _amount;
 }
