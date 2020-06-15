@@ -21,7 +21,7 @@ class UsersRepository {
   }
 
   Future<PostResponse> usersRegister(username, password, name) async {
-    try {
+    try { 
       final response = await http.post(BaseUrl.BASE_URL + 'register',
           body: {'username': username, 'password': password, 'name': name});
       if (response.statusCode == 200) {

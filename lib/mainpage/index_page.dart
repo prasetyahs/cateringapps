@@ -46,21 +46,11 @@ class IndexPageState extends State<IndexPage> {
           centerTitle: true,
           backgroundColor: Colors.red,
           title: Text('DJ Catering'),
-          leading: Consumer<IndexProvider>(
-            builder: (context, value, child) => InkWell(
-                onTap: () => {
-                      value.logout(),
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/', (route) => false)
-                    },
-                child:
-                    Tooltip(message: 'Logout', child: Icon(Icons.exit_to_app))),
-          ),
           actions: <Widget>[
             Container(
-              margin: EdgeInsets.only(right: 15),
+              margin: EdgeInsets.only(right: 18),
               child: InkWell(
-                onTap: ()=>Navigator.pushNamed(context, 'cartPage'),
+                onTap: () => Navigator.pushNamed(context, '/cartPage'),
                 child: Badge(
                   badgeColor: Colors.grey,
                   badgeContent: Consumer<IndexProvider>(
@@ -69,8 +59,8 @@ class IndexPageState extends State<IndexPage> {
                         future: value.users(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            value.readNumRowsCart(
-                                snapshot.data.idUsers.toString());
+                          
+                            value.readNumRowsCart(snapshot.data.idUsers);
                             return Text(
                               value.numRowsCart.toString(),
                               style: TextStyle(color: Colors.white),
@@ -90,7 +80,20 @@ class IndexPageState extends State<IndexPage> {
                   ),
                 ),
               ),
-            )
+            ),
+            Consumer<IndexProvider>(
+              builder: (context, value, child) => Container(
+                margin: EdgeInsets.only(right: 10),
+                child: InkWell(
+                    onTap: () => {
+                          value.logout(),
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, '/', (route) => false)
+                        },
+                    child: Tooltip(
+                        message: 'Logout', child: Icon(Icons.exit_to_app))),
+              ),
+            ),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

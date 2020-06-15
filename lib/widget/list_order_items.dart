@@ -1,18 +1,34 @@
+import 'package:djcateringapps/repository/base_url.dart';
 import 'package:djcateringapps/utilities/responsive_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListOrderItems extends StatelessWidget {
   final ResponsiveLayout responsiveLayout;
-
-  const ListOrderItems({Key key, this.responsiveLayout}) : super(key: key);
+  final String orderNumber,
+      productName,
+      orderDate,
+      totalOrder,
+      status,
+      productImage;
+  const ListOrderItems(
+      {Key key,
+      this.responsiveLayout,
+      this.orderNumber,
+      this.productName,
+      this.orderDate,
+      this.totalOrder,
+      this.productImage,
+      this.status})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.only(top: 5, right: 15, left: 15),
+      margin: EdgeInsets.only(top: 5, right: 15, left: 15,bottom: 5),
       padding: EdgeInsets.all(15),
       height: ScreenUtil().setHeight(160),
       width: MediaQuery.of(context).size.width,
@@ -26,7 +42,7 @@ class ListOrderItems extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Text(
-                    '65343',
+                    orderNumber,
                     style: TextStyle(color: Colors.white),
                   ),
                   decoration: BoxDecoration(
@@ -46,24 +62,34 @@ class ListOrderItems extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Image.network(
-                  "https://assets-a2.kompasiana.com/items/album/2017/03/14/kue-indomie-2-58c7fbdc84afbdde0704279a.jpg?t=o&v=760",
+                  BaseUrl.BASE_URL_IMAGE + productImage,
                   width: ScreenUtil().setWidth(70),
                   fit: BoxFit.cover,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Kue Ulang Tahun',
+                    Text(productName,
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
                         )),
                     Text(
-                      'RP 200.000',
+                      new FlutterMoneyFormatter(
+                              amount: double.parse(totalOrder),
+                              settings: MoneyFormatterSettings(
+                                  symbol: 'IDR',
+                                  thousandSeparator: '.',
+                                  decimalSeparator: ',',
+                                  symbolAndNumberSeparator: ' ',
+                                  fractionDigits: 2,
+                                  compactFormatType: CompactFormatType.short))
+                          .output
+                          .symbolOnLeft,
                       style: TextStyle(color: Colors.redAccent),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(19)),
                     Text(
-                      '2020-09-20',
+                      orderDate,
                       style: TextStyle(
                           color: Colors.grey.withOpacity(0.8),
                           fontSize: ScreenUtil().setSp(13)),
@@ -72,10 +98,10 @@ class ListOrderItems extends StatelessWidget {
                 ),
                 Container(
                   child: Text(
-                    'x2',
+                    status,
                     style: TextStyle(color: Colors.white),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                   decoration:
                       BoxDecoration(color: Colors.grey.withOpacity(0.8)),
                 )

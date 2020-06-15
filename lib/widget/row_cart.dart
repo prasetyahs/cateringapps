@@ -50,10 +50,20 @@ class RowCart extends StatelessWidget {
                                   child: LoadingDialog(),
                                   elevation: 10.0,
                                 ));
-
-                        value.deleteCart(idCart).then((value) => value.result
-                            ? Navigator.pop(context)
-                            : Navigator.pop(context));
+                        value.users().then((val) => value
+                                .deleteCart(idCart, val.idUsers)
+                                .then((value1) {
+                              if (value1.result != null) {
+                                Navigator.pop(context);
+                                if (value1.countRow <= 0) {
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, '/homePage', (route) => false);
+                                }
+                                value.setSubTotal(0);
+                              } else {
+                                Navigator.pop(context);
+                              }
+                            }));
                       },
                     ),
                   )),
@@ -107,13 +117,13 @@ class RowCart extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: Color(0xFFe0f2f1)),
                             child: FloatingActionButton(
-                              heroTag: null,
+                                heroTag: null,
                                 backgroundColor: Colors.red,
                                 onPressed: () {
                                   value.amountIncrement(amount);
-
                                   value.editAmountcart(
                                       idCart, value.amount.toString());
+                                  value.setSubTotal(0);
                                 },
                                 child: Text(
                                   '+',
@@ -137,6 +147,7 @@ class RowCart extends StatelessWidget {
                                   value.amountDecrement(amount);
                                   value.editAmountcart(
                                       idCart, value.amount.toString());
+                                  value.setSubTotal(0);
                                 },
                                 child: Text(
                                   '-',

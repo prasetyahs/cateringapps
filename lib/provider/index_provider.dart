@@ -1,5 +1,7 @@
 import 'package:djcateringapps/model/login/data.dart';
+import 'package:djcateringapps/model/order/MultipleResponseOrder.dart';
 import 'package:djcateringapps/model/order/cart.dart';
+import 'package:djcateringapps/model/order/order.dart';
 import 'package:djcateringapps/model/order/sub_total.dart';
 import 'package:djcateringapps/model/product/products.dart';
 import 'package:djcateringapps/repository/order_repository.dart';
@@ -22,6 +24,11 @@ class IndexProvider extends ChangeNotifier {
 
   int _numRowsCart = 0;
 
+ Future<Order> addOrder(String idUsers, String idCart,String totalOrder) async {
+    Order order = await _orderRepository.addOrder(idUsers, idCart,totalOrder);
+    notifyListeners();
+    return order;
+  }
   setProductAll() {
     _productRepository.readAllProduct().then((value) {
       _products = Products(product: value.product, row: value.row);
@@ -43,22 +50,21 @@ class IndexProvider extends ChangeNotifier {
         .then((value) {
       _cart = value;
     });
+    notifyListeners();
     return _cart;
   }
 
-  readNumRowsCart(idUsers) async{
+  readNumRowsCart(String idUsers) async {
     await _orderRepository.numRowsCart(idUsers).then((value) {
       _numRowsCart = value.result;
-     // notifyListeners();
+      //notifyListeners();
     });
   }
-  
-  get numRowsCart =>_numRowsCart;
+
+  get numRowsCart => _numRowsCart;
 
   get cart => _cart;
 
-
-  
   get products => _products;
 
   get subTotal => _subTotal;
@@ -68,8 +74,6 @@ class IndexProvider extends ChangeNotifier {
   users() async => Data.fromJson(await sharedPref.readDataUsers("users"));
 
   get purchaseAmount => _purchaseAmount;
-
-
 
   void incrementPurchase() {
     _purchaseAmount++;
@@ -81,5 +85,12 @@ class IndexProvider extends ChangeNotifier {
       _purchaseAmount--;
     }
     notifyListeners();
+  }
+
+  Future<MultipleResponseOrder> readOrderByUsers(String idUsers) async {
+    MultipleResponseOrder response =
+        await _orderRepository.readOrderByUser(idUsers);
+
+    return response;
   }
 }

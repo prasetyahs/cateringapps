@@ -142,33 +142,57 @@ class AddCartDialogContent extends StatelessWidget {
                   fontSize: ScreenUtil().setHeight(11),
                   color: Colors.grey.withOpacity(0.8)),
             ),
-            Consumer<IndexProvider>(
-                builder: (context, value, child) =>
-                    value.subTotal.subtotal == 0 && value.purchaseAmount > 0
-                        ? JumpingText(
-                            '...',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        : Text(new FlutterMoneyFormatter(
-                                amount: value.subTotal.subtotal.toDouble(),
-                                settings: MoneyFormatterSettings(
-                                    symbol: 'IDR',
-                                    thousandSeparator: '.',
-                                    decimalSeparator: ',',
-                                    symbolAndNumberSeparator: ' ',
-                                    fractionDigits: 2,
-                                    compactFormatType: CompactFormatType.short))
-                            .output
-                            .symbolOnLeft)),
+            Consumer<IndexProvider>(builder: (context, value, child) {
+              return value.subTotal.subtotal == 0 && value.purchaseAmount > 0
+                  ? JumpingText(
+                      '...',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : Text(new FlutterMoneyFormatter(
+                          amount: value.subTotal.subtotal.toDouble(),
+                          settings: MoneyFormatterSettings(
+                              symbol: 'IDR',
+                              thousandSeparator: '.',
+                              decimalSeparator: ',',
+                              symbolAndNumberSeparator: ' ',
+                              fractionDigits: 2,
+                              compactFormatType: CompactFormatType.short))
+                      .output
+                      .symbolOnLeft);
+            }),
             Container(
                 width: MediaQuery.of(context).size.width,
-                child: RaisedButton(
-                  child: Text(
-                    'LANJUT ORDER',
-                    style: TextStyle(color: Colors.white),
+                child: Consumer<IndexProvider>(
+                  builder: (context, value, child) => RaisedButton(
+                    child: Text(
+                      'LANJUT ORDER',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      if (value.purchaseAmount > 0) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                  child: LoadingDialog(),
+                                  elevation: 10.0,
+                                ));
+                        value.users().then((users) {
+                          value
+                              .addCart(users.idUsers, idProduct,
+                                  value.purchaseAmount)
+                              .then((response) {
+                            value
+                                .addOrder(
+                                    users.idUsers,
+                                    response.idCart.toString(),
+                                    value.subTotal.subtotal.toString())
+                                .then((value) => Navigator.pop(context));
+                          });
+                        });
+                      }
+                    },
+                    color: Colors.redAccent,
                   ),
-                  onPressed: () {},
-                  color: Colors.redAccent,
                 )),
             Container(
                 width: MediaQuery.of(context).size.width,

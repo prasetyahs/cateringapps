@@ -57,7 +57,6 @@ class RegisterPageState extends State<RegisterPage> {
     final responsive = ResponsiveLayout(context);
     responsive.responsiveSettings();
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
@@ -132,7 +131,8 @@ class RegisterPageState extends State<RegisterPage> {
                         child: TextFormField(
                           focusNode: _usernameFocus,
                           controller: username,
-                          onFieldSubmitted: (val)=>_fieldFocusChange(context, _usernameFocus, _passwordFucos),
+                          onFieldSubmitted: (val) => _fieldFocusChange(
+                              context, _usernameFocus, _passwordFucos),
                           validator: (val) =>
                               val.isEmpty ? '*Username Required' : null,
                           decoration: InputDecoration(

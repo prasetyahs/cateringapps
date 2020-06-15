@@ -24,6 +24,7 @@ class LoginPageState extends State<LoginPage> {
     super.initState();
     pr = new ProgressDialog(context);
     pr.style(
+        
         message: "Mohon Tunggu",
         backgroundColor: Colors.white,
         elevation: 10.0,
