@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        height: ScreenUtil().setHeight(300),
+                        height: ScreenUtil().setHeight(260),
                         child: Consumer<IndexProvider>(
                             builder: (context, value, child) {
                           if (value.products == null) {

@@ -59,7 +59,6 @@ class IndexPageState extends State<IndexPage> {
                         future: value.users(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                          
                             value.readNumRowsCart(snapshot.data.idUsers);
                             return Text(
                               value.numRowsCart.toString(),

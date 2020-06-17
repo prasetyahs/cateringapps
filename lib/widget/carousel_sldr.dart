@@ -9,7 +9,7 @@ class CarouselSldr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(300.0),
+      height: ScreenUtil().setHeight(340.0),
       child: Stack(
         children: <Widget>[
           CarouselSlider(
@@ -33,7 +33,7 @@ class CarouselSldr extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
+            margin: EdgeInsets.symmetric(vertical: 50),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Row(

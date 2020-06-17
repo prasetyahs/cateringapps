@@ -24,11 +24,8 @@ class ProfilePage extends StatelessWidget {
                 width: ScreenUtil().setWidth(120),
                 height: ScreenUtil().setHeight(120),
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://photographyinhu.com/wp-content/uploads/2019/10/Foto-Close-Up-Inhu.jpg")))),
+                  shape: BoxShape.circle,
+                )),
           ),
           Container(
             margin: EdgeInsets.only(top: 15),

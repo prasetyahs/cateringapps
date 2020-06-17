@@ -41,7 +41,7 @@ class ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double itemHeight = (ScreenUtil().setHeight(190)) / 2;
+    final double itemHeight = (ScreenUtil().setHeight(150)) / 2;
     final double itemWidth = ScreenUtil().setWidth(110) / 2;
     return Column(
       children: <Widget>[
