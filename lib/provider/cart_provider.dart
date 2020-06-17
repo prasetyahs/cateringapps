@@ -21,8 +21,8 @@ class CartProvider extends ChangeNotifier {
     return _usersCart;
   }
 
-  Future<Cart> deleteCart(String idCart,String idUsers) async {
-    Cart _cart = await _orderRepository.deleteCart(idCart,idUsers);
+  Future<Cart> deleteCart(String idCart, String idUsers) async {
+    Cart _cart = await _orderRepository.deleteCart(idCart, idUsers);
     notifyListeners();
     return _cart;
   }
@@ -62,13 +62,17 @@ class CartProvider extends ChangeNotifier {
 
   get subTotal => _subTotal;
 
+  UsersCart get cart => _usersCart;
+
   Future<NumRowsCart> totalProductCart(String idUsers) async {
     NumRowsCart totalProduct = await _orderRepository.totalProductCart(idUsers);
     return totalProduct;
   }
 
-  Future<Order> addOrder(String idUsers, String idCart,String totalOrder) async {
-    Order order = await _orderRepository.addOrder(idUsers, idCart,totalOrder);
+  Future<Order> addOrder(String idUsers, String idCart, String totalOrder,
+      String dateRequest) async {
+    Order order = await _orderRepository.addOrder(
+        idUsers, idCart, totalOrder, dateRequest);
     notifyListeners();
     return order;
   }

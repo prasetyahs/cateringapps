@@ -24,11 +24,13 @@ class IndexProvider extends ChangeNotifier {
 
   int _numRowsCart = 0;
 
- Future<Order> addOrder(String idUsers, String idCart,String totalOrder) async {
-    Order order = await _orderRepository.addOrder(idUsers, idCart,totalOrder);
-    notifyListeners();
+  Future<Order> addOrder(String idUsers, String idCart, String totalOrder,
+      String dateRequest) async {
+    Order order = await _orderRepository.addOrder(
+        idUsers, idCart, totalOrder, dateRequest);
     return order;
   }
+
   setProductAll() {
     _productRepository.readAllProduct().then((value) {
       _products = Products(product: value.product, row: value.row);

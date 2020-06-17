@@ -57,7 +57,6 @@ class CartState extends State<CartPage> {
                                               (BuildContext ctx, int index) {
                                             Result result =
                                                 snapshot1.data.result[index];
-
                                             return RowCart(
                                                 idCart: result.idCart,
                                                 productName: result.productName,
@@ -300,36 +299,12 @@ class CartState extends State<CartPage> {
                                         child: Consumer<CartProvider>(
                                           builder: (context, value, child) =>
                                               RaisedButton(
-                                            onPressed: () =>
-                                                value.users().then((val) {
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          Dialog(
-                                                            child:
-                                                                LoadingDialog(),
-                                                            elevation: 10.0,
-                                                          ));
-                                              value
-                                                  .readCart(val.idUsers)
-                                                  .then((cartval) {
-                                                cartval.result.forEach((cart) {
-                                                  value.addOrder(
-                                                      val.idUsers, cart.idCart,value.subTotal.toString());
-                                                });
-                                              }).whenComplete(() {
-                                                Navigator.pop(context);
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) =>
-                                                        Dialog(
-                                                          child: DialogInfo(
-                                                              ),
-                                                          elevation: 10.0,
-                                                        ));
-                                              });
-                                            }),
+                                            onPressed: () {
+                                              UsersCart usersCart = value.cart;
+                                              Navigator.pushNamed(
+                                                  context, "/orderSettings",
+                                                  arguments: usersCart);
+                                            },
                                             child: Text(
                                               "LANJUT ORDER",
                                               style: TextStyle(
@@ -342,7 +317,7 @@ class CartState extends State<CartPage> {
                                 )
                               : Container(
                                   width: MediaQuery.of(context).size.width,
-                                  margin: EdgeInsets.only(bottom:50),
+                                  margin: EdgeInsets.only(bottom: 50),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -362,7 +337,7 @@ class CartState extends State<CartPage> {
                                     ],
                                   )));
                     } else {
-                      return CircularProgressIndicator();
+                      return Center(child:CircularProgressIndicator());
                     }
                   },
                 );

@@ -24,6 +24,66 @@ class DetailOrderState extends State<DetailOrder> {
     }
     return Scaffold(
       appBar: AppBar(title: Text('Detail Order')),
+      bottomNavigationBar: BottomAppBar(
+          child: Container(
+        height: ScreenUtil().setHeight(140),
+        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
+        padding: EdgeInsets.all(15),
+        margin: EdgeInsets.all(10),
+        child: Column(children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              'Total yang harus dibayar',
+              style: TextStyle(fontSize: ScreenUtil().setSp(13)),
+            ),
+            Text(
+                new FlutterMoneyFormatter(
+                        amount: double.parse(orderbyuser.totalOrder),
+                        settings: MoneyFormatterSettings(
+                            symbol: 'IDR',
+                            thousandSeparator: '.',
+                            decimalSeparator: ',',
+                            symbolAndNumberSeparator: ' ',
+                            fractionDigits: 2,
+                            compactFormatType: CompactFormatType.short))
+                    .output
+                    .symbolOnLeft,
+                style: TextStyle(fontSize: ScreenUtil().setSp(13)))
+          ]),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('DP yang harus dibayar',
+                  style: TextStyle(fontSize: ScreenUtil().setSp(13))),
+              Text(
+                  new FlutterMoneyFormatter(
+                          amount: double.parse(orderbyuser.totalOrder) * 0.3,
+                          settings: MoneyFormatterSettings(
+                              symbol: 'IDR',
+                              thousandSeparator: '.',
+                              decimalSeparator: ',',
+                              symbolAndNumberSeparator: ' ',
+                              fractionDigits: 2,
+                              compactFormatType: CompactFormatType.short))
+                      .output
+                      .symbolOnLeft,
+                  style: TextStyle(fontSize: ScreenUtil().setSp(13)))
+            ],
+          ),
+          SizedBox(height: 10),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              child: RaisedButton(
+                onPressed: () {},
+                child: Text('Upload Bukti DP/Lunas',
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(13), color: Colors.white)),
+                color: Colors.red,
+              )),
+        ]),
+      )),
       backgroundColor: Color.fromRGBO(240, 240, 240, 257),
       body: Column(
         children: [
@@ -76,21 +136,21 @@ class DetailOrderState extends State<DetailOrder> {
                             return true;
                           },
                           child: LimitedBox(
-                            maxHeight: 200.0,
+                            maxHeight: 350.0,
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: snapshot.data.myOrder.length,
                                 itemBuilder: (context, index) => Column(
                                       children: [
                                         RowDetailOrder(
-                                          productName: snapshot.data
-                                              .myOrder[index].productName,
+                                          productName: snapshot
+                                              .data.myOrder[index].productName,
                                           price: snapshot
                                               .data.myOrder[index].price,
                                           amountProduct: snapshot.data
                                               .myOrder[index].purchaseamount,
-                                          imageProduct: snapshot.data
-                                              .myOrder[index].productImage,
+                                          imageProduct: snapshot
+                                              .data.myOrder[index].productImage,
                                         ),
                                         SizedBox(height: 10),
                                         Divider(
@@ -133,66 +193,6 @@ class DetailOrderState extends State<DetailOrder> {
               ],
             ),
           ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: Colors.white,
-            padding: EdgeInsets.all(15),
-            margin: EdgeInsets.all(10),
-            child: Column(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(
-                  'Total yang harus dibayar',
-                  style: TextStyle(fontSize: ScreenUtil().setSp(13)),
-                ),
-                Text(
-                    new FlutterMoneyFormatter(
-                            amount: double.parse(orderbyuser.totalOrder),
-                            settings: MoneyFormatterSettings(
-                                symbol: 'IDR',
-                                thousandSeparator: '.',
-                                decimalSeparator: ',',
-                                symbolAndNumberSeparator: ' ',
-                                fractionDigits: 2,
-                                compactFormatType: CompactFormatType.short))
-                        .output
-                        .symbolOnLeft,
-                    style: TextStyle(fontSize: ScreenUtil().setSp(13)))
-              ]),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('DP yang harus dibayar',
-                      style: TextStyle(fontSize: ScreenUtil().setSp(13))),
-                  Text(
-                      new FlutterMoneyFormatter(
-                              amount:
-                                  double.parse(orderbyuser.totalOrder) * 0.3,
-                              settings: MoneyFormatterSettings(
-                                  symbol: 'IDR',
-                                  thousandSeparator: '.',
-                                  decimalSeparator: ',',
-                                  symbolAndNumberSeparator: ' ',
-                                  fractionDigits: 2,
-                                  compactFormatType: CompactFormatType.short))
-                          .output
-                          .symbolOnLeft,
-                      style: TextStyle(fontSize: ScreenUtil().setSp(13)))
-                ],
-              ),
-              SizedBox(height: 10),
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: RaisedButton(
-                    onPressed: () {},
-                    child: Text('Upload Bukti DP/Lunas',
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setSp(13),
-                            color: Colors.white)),
-                    color: Colors.red,
-                  )),
-            ]),
-          )
         ],
       ),
     );

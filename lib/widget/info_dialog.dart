@@ -27,18 +27,14 @@ class DialogInfo extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FlatButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Close',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ))),
-              FlatButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Info Pembayaran',
-                      style: TextStyle(
-                        color: Colors.blue,
-                      ))),
+              Center(
+                child: FlatButton(
+                    onPressed: () => Navigator.pushNamedAndRemoveUntil(context, "/homePage", (route) => false),
+                    child: Text('Kembali',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ))),
+              ),
               SizedBox(width: 5)
             ],
           )

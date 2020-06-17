@@ -120,10 +120,15 @@ class OrderRepository {
     }
   }
 
-  Future<Order> addOrder(
-      String idUsers, String idCart, String totalOrder) async {
-    final response = await http.post(BaseUrl.BASE_URL + "order/ordering",
-        body: {'id_users': idUsers, 'id_cart': idCart, 'total': totalOrder});
+  Future<Order> addOrder(String idUsers, String idCart, String totalOrder,
+      String dateRequest) async {
+    final response =
+        await http.post(BaseUrl.BASE_URL + "order/ordering", body: {
+      'id_users': idUsers,
+      'id_cart': idCart,
+      'total': totalOrder,
+      'date_request': dateRequest
+    });
     if (response.statusCode == 200) {
       return Order.fromJson(convert.jsonDecode(response.body));
     } else {

@@ -20,7 +20,7 @@ class AddCartDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(330),
+      height: ScreenUtil().setHeight(280),
       padding: EdgeInsets.all(10),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +129,18 @@ class AddCartDialogContent extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10),
-            Text(productPrice,
+            Text(
+                new FlutterMoneyFormatter(
+                        amount: double.parse(productPrice),
+                        settings: MoneyFormatterSettings(
+                            symbol: 'IDR',
+                            thousandSeparator: '.',
+                            decimalSeparator: ',',
+                            symbolAndNumberSeparator: ' ',
+                            fractionDigits: 2,
+                            compactFormatType: CompactFormatType.short))
+                    .output
+                    .symbolOnLeft,
                 style: TextStyle(
                   color: Colors.redAccent,
                   fontSize: ScreenUtil().setSp(13),
@@ -163,46 +174,11 @@ class AddCartDialogContent extends StatelessWidget {
             Container(
                 width: MediaQuery.of(context).size.width,
                 child: Consumer<IndexProvider>(
-                  builder: (context, value, child) => RaisedButton(
-                    child: Text(
-                      'LANJUT ORDER',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      if (value.purchaseAmount > 0) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                  child: LoadingDialog(),
-                                  elevation: 10.0,
-                                ));
-                        value.users().then((users) {
-                          value
-                              .addCart(users.idUsers, idProduct,
-                                  value.purchaseAmount)
-                              .then((response) {
-                            value
-                                .addOrder(
-                                    users.idUsers,
-                                    response.idCart.toString(),
-                                    value.subTotal.subtotal.toString())
-                                .then((value) => Navigator.pop(context));
-                          });
-                        });
-                      }
-                    },
-                    color: Colors.redAccent,
-                  ),
-                )),
-            Container(
-                width: MediaQuery.of(context).size.width,
-                child: Consumer<IndexProvider>(
                     builder: (context, value, child) => FlatButton(
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.red, width: 1.0)),
+                          color: Colors.red,
                           child: Text(
-                            'TAMBAH CART',
-                            style: TextStyle(color: Colors.red),
+                            'TAMBAH KERANJANG',
+                            style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
                             if (value.purchaseAmount > 0) {

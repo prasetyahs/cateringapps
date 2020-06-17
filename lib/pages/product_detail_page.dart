@@ -1,12 +1,21 @@
 import 'package:badges/badges.dart';
+import 'package:djcateringapps/model/cart/result.dart';
+import 'package:djcateringapps/model/cart/users_cart.dart';
+import 'package:djcateringapps/model/product/product.dart';
+import 'package:djcateringapps/provider/index_provider.dart';
+import 'package:djcateringapps/repository/base_url.dart';
+import 'package:djcateringapps/widget/add_cart_dialog_content.dart';
 import 'package:djcateringapps/widget/product_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Product product = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         backgroundColor: Color.fromRGBO(240, 240, 240, 257),
         bottomNavigationBar: BottomAppBar(
@@ -20,12 +29,37 @@ class ProductDetailPage extends StatelessWidget {
                       children: [
                         IconButton(
                             icon: Icon(Icons.add_shopping_cart),
-                            onPressed: () {}),
+                            onPressed: () => showDialog(
+                                context: context,
+                                child: Dialog(
+                                    child: ChangeNotifierProvider.value(
+                                        value: IndexProvider(),
+                                        child: AddCartDialogContent(
+                                          productName: product.productName,
+                                          productPrice: product.price,
+                                          idProduct: product.idProduct,
+                                          imageContent: BaseUrl.BASE_URL_IMAGE +
+                                              product.productImage,
+                                        ))))),
                         Container(
                           width: ScreenUtil().setWidth(330),
                           child: FlatButton(
                             color: Colors.red,
-                            onPressed: () {},
+                            onPressed: () {
+                              List<Result> listProduct = [];
+                              listProduct.add(new Result(
+                                  idCart: "",
+                                  idProduct: product.idProduct,
+                                  productName: product.productName,
+                                  price: product.price,
+                                  productImage: product.productImage,
+                                  purchaseamount: "1",
+                                  isOrder: "1"));
+                              UsersCart usersCart =
+                                  UsersCart(result: listProduct);
+                              Navigator.pushNamed(context, "/orderSettings",
+                                  arguments: usersCart);
+                            },
                             child: Text(
                               'Beli',
                               style: TextStyle(color: Colors.white),
@@ -46,7 +80,7 @@ class ProductDetailPage extends StatelessWidget {
                   sliver: SliverSafeArea(
                     top: false,
                     sliver: SliverAppBar(
-                      title: Text('Crossaint'),
+                      title: Text(product.productName),
                       centerTitle: true,
                       actions: [
                         Container(
@@ -71,8 +105,8 @@ class ProductDetailPage extends StatelessWidget {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "http://192.168.100.6/cateringapps/images/pie.jpg"))),
+                                image: NetworkImage(BaseUrl.BASE_URL_IMAGE +
+                                    product.productImage))),
                       )),
                     ),
                   ),
@@ -87,7 +121,17 @@ class ProductDetailPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Rp 33.7842',
+                      new FlutterMoneyFormatter(
+                              amount: double.parse(product.price),
+                              settings: MoneyFormatterSettings(
+                                  symbol: 'IDR',
+                                  thousandSeparator: '.',
+                                  decimalSeparator: ',',
+                                  symbolAndNumberSeparator: ' ',
+                                  fractionDigits: 2,
+                                  compactFormatType: CompactFormatType.short))
+                          .output
+                          .symbolOnLeft,
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w800,
@@ -107,7 +151,7 @@ class ProductDetailPage extends StatelessWidget {
                           ),
                           SizedBox(width: 5),
                           Text(
-                            'Kue Kering',
+                            product.categoryName,
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -119,7 +163,7 @@ class ProductDetailPage extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Product Title',
+                      product.productName,
                       style: TextStyle(
                           fontWeight: FontWeight.w800,
                           color: Colors.grey,
@@ -133,7 +177,7 @@ class ProductDetailPage extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+                  product.productDescription,
                   textAlign: TextAlign.justify,
                 ),
                 SizedBox(height: 10),

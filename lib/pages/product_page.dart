@@ -36,7 +36,6 @@ class ProductPageState extends State<ProductPage> {
           });
       }
     });
-   
   }
 
   @override
@@ -74,26 +73,32 @@ class ProductPageState extends State<ProductPage> {
                           crossAxisSpacing: 10.0,
                           mainAxisSpacing: 10.0,
                         ),
-                        itemBuilder: (context, index) => ProductItems(
-                              margin: 0,
-                              productName: value.products.product
-                                  .elementAt(index)
-                                  .productName,
-                              productImage: BaseUrl.BASE_URL_IMAGE +
-                                  value.products.product
-                                      .elementAt(index)
-                                      .productImage,
-                              productDesc: value.products.product
-                                  .elementAt(index)
-                                  .productDescription,
-                              price: "Rp " +
-                                  value.products.product
-                                      .elementAt(index)
-                                      .price +
-                                  ",00",
-                              idProduct: value.products.product
-                                  .elementAt(index)
-                                  .idProduct,
+                        itemBuilder: (context, index) => InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                  context, '/detailProduct',
+                                  arguments:
+                                      value.products.product.elementAt(index)),
+                              child: ProductItems(
+                                margin: 0,
+                                productName: value.products.product
+                                    .elementAt(index)
+                                    .productName,
+                                productImage: BaseUrl.BASE_URL_IMAGE +
+                                    value.products.product
+                                        .elementAt(index)
+                                        .productImage,
+                                productDesc: value.products.product
+                                    .elementAt(index)
+                                    .productDescription,
+                                price: "Rp " +
+                                    value.products.product
+                                        .elementAt(index)
+                                        .price +
+                                    ",00",
+                                idProduct: value.products.product
+                                    .elementAt(index)
+                                    .idProduct,
+                              ),
                             ))
                     : Center(child: CircularProgressIndicator());
               })),

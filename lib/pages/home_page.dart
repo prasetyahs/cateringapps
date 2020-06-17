@@ -54,26 +54,32 @@ class HomePage extends StatelessWidget {
                                   itemCount: value.products.row >= 5
                                       ? 5
                                       : value.products.row,
-                                  itemBuilder: (context, index) => ProductItems(
-                                        productName: value.products.product
-                                            .elementAt(index)
-                                            .productName,
-                                        productImage: BaseUrl.BASE_URL_IMAGE +
-                                            value.products.product
-                                                .elementAt(index)
-                                                .productImage,
-                                        productDesc: value.products.product
-                                            .elementAt(index)
-                                            .productDescription,
-                                        price: "Rp " +
-                                            value.products.product
-                                                .elementAt(index)
-                                                .price +
-                                            ",00",
-                                        idProduct: value.products.product
-                                            .elementAt(index)
-                                            .idProduct,
-                                        margin: 5,
+                                  itemBuilder: (context, index) => InkWell(
+                                        onTap: () => Navigator.pushNamed(
+                                            context, '/detailProduct',
+                                            arguments: value.products.product
+                                                .elementAt(index)),
+                                        child: ProductItems(
+                                          productName: value.products.product
+                                              .elementAt(index)
+                                              .productName,
+                                          productImage: BaseUrl.BASE_URL_IMAGE +
+                                              value.products.product
+                                                  .elementAt(index)
+                                                  .productImage,
+                                          productDesc: value.products.product
+                                              .elementAt(index)
+                                              .productDescription,
+                                          price: "Rp " +
+                                              value.products.product
+                                                  .elementAt(index)
+                                                  .price +
+                                              ",00",
+                                          idProduct: value.products.product
+                                              .elementAt(index)
+                                              .idProduct,
+                                          margin: 5,
+                                        ),
                                       ))
                               : Center(child: CircularProgressIndicator());
                         }))
