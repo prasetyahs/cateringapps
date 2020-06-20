@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:djcateringapps/model/cart/users_cart.dart';
@@ -156,6 +157,18 @@ class OrderRepository {
         numberOrder);
     if (response.statusCode == 200) {
       return ModelDetailOrder.fromJson(convert.jsonDecode(response.body));
+    } else {
+      throw SocketException('Failed to load');
+    }
+  }
+
+  Future<Order> uploadPayment(File image, String idOrder) async {
+    String base64Image = base64Encode(image.readAsBytesSync());
+    final response = await http.post(BaseUrl.BASE_URL + "order/uploadPayment",
+        body: {'id_order': idOrder, 'image_pay': base64Image});
+    if (response.statusCode == 200) {
+        print(response.body);
+      // return Order.fromJson(convert.jsonDecode(response.body));
     } else {
       throw SocketException('Failed to load');
     }

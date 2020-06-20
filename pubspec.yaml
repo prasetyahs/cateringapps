@@ -39,6 +39,8 @@ dependencies:
   flutter_screenutil: ^1.0.2
   carousel_slider: ^2.0.0
   flutter_money_formatter: ^0.8.3
+  image_picker: ^0.6.7+2
+  fluttertoast: ^4.0.0
 
 
 dev_dependencies:

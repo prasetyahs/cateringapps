@@ -150,6 +150,7 @@ class OrderSettingsState extends State<OrderSettings> {
                                     }).whenComplete(() {
                                       Navigator.pop(context);
                                       showDialog(
+                                        barrierDismissible: false,
                                           context: context,
                                           child: Dialog(
                                             child: DialogInfo(),
