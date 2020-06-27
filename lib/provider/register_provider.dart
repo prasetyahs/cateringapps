@@ -6,8 +6,8 @@ class RegisterProvider with ChangeNotifier {
   final _usersRepo = UsersRepository();
   PostResponse _postResponse = PostResponse();
 
-  usersRegister(String username, String password, String name) {
-    _usersRepo.usersRegister(username, password, name).then((value) {
+  usersRegister(String username, String password, String name, String email) {
+    _usersRepo.usersRegister(username, password, name, email).then((value) {
       _postResponse = value;
       notifyListeners();
     });

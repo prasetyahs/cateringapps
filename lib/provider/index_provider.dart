@@ -3,15 +3,18 @@ import 'package:djcateringapps/model/order/MultipleResponseOrder.dart';
 import 'package:djcateringapps/model/order/cart.dart';
 import 'package:djcateringapps/model/order/order.dart';
 import 'package:djcateringapps/model/order/sub_total.dart';
+import 'package:djcateringapps/model/post/post_response.dart';
 import 'package:djcateringapps/model/product/products.dart';
 import 'package:djcateringapps/repository/order_repository.dart';
 import 'package:djcateringapps/repository/product_repository.dart';
 import 'package:djcateringapps/repository/shared_pref.dart';
+import 'package:djcateringapps/repository/users_repository.dart';
 import 'package:flutter/cupertino.dart';
 
 class IndexProvider extends ChangeNotifier {
   ProductRepository _productRepository = ProductRepository();
   OrderRepository _orderRepository = OrderRepository();
+  UsersRepository _usersRepository = UsersRepository();
 
   Products _products;
   Cart _cart;
@@ -23,6 +26,15 @@ class IndexProvider extends ChangeNotifier {
   int _purchaseAmount = 0;
 
   int _numRowsCart = 0;
+
+  bool _isEditProfile = true;
+
+  get isEdit => _isEditProfile;
+
+  setIsEdit(bool isEdit) {
+    _isEditProfile = isEdit;
+    notifyListeners();
+  }
 
   Future<Order> addOrder(String idUsers, String idCart, String totalOrder,
       String dateRequest) async {
@@ -59,10 +71,11 @@ class IndexProvider extends ChangeNotifier {
   readNumRowsCart(String idUsers) async {
     await _orderRepository.numRowsCart(idUsers).then((value) {
       _numRowsCart = value.result;
-      //notifyListeners();
+      // notifyListeners();
     });
   }
 
+  set purchaseAmount(newValue) => _purchaseAmount = newValue;
   get numRowsCart => _numRowsCart;
 
   get cart => _cart;
@@ -94,5 +107,16 @@ class IndexProvider extends ChangeNotifier {
         await _orderRepository.readOrderByUser(idUsers);
 
     return response;
+  }
+
+  Future<PostResponse> editAccount(String username, String name, String email,
+      String telp, String address, String idUsers) async {
+    PostResponse postResponse = await _usersRepository.editAccount(
+        username, name, email, telp, address, idUsers);
+    return postResponse;
+  }
+
+  editSession(Data data) async {
+    await sharedPref.saveDataUsers('users', data);
   }
 }

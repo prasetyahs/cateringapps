@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductItems extends StatelessWidget {
@@ -40,7 +41,17 @@ class ProductItems extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            price,
+            new FlutterMoneyFormatter(
+                              amount: double.parse(price),
+                              settings: MoneyFormatterSettings(
+                                  symbol: 'IDR',
+                                  thousandSeparator: '.',
+                                  decimalSeparator: ',',
+                                  symbolAndNumberSeparator: ' ',
+                                  fractionDigits: 2,
+                                  compactFormatType: CompactFormatType.short))
+                          .output
+                          .symbolOnLeft,
             style: TextStyle(
                 color: Colors.red.withOpacity(0.8),
                 fontSize: ScreenUtil().setSp(15)),

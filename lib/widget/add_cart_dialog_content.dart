@@ -20,7 +20,7 @@ class AddCartDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(280),
+      height: ScreenUtil().setHeight(290),
       padding: EdgeInsets.all(10),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

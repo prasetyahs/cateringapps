@@ -64,42 +64,47 @@ class ProductPageState extends State<ProductPage> {
                   value.setProductAll();
                 }
                 return value.products != null
-                    ? GridView.builder(
-                        controller: scrollController,
-                        itemCount: value.products.row,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: itemWidth / itemHeight,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0,
-                        ),
-                        itemBuilder: (context, index) => InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                  context, '/detailProduct',
-                                  arguments:
-                                      value.products.product.elementAt(index)),
-                              child: ProductItems(
-                                margin: 0,
-                                productName: value.products.product
-                                    .elementAt(index)
-                                    .productName,
-                                productImage: BaseUrl.BASE_URL_IMAGE +
-                                    value.products.product
+                    ? NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (overscroll) {
+                          overscroll.disallowGlow();
+                          return true;
+                        },
+                        child: GridView.builder(
+                            controller: scrollController,
+                            itemCount: value.products.row,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: itemWidth / itemHeight,
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 10.0,
+                            ),
+                            itemBuilder: (context, index) => InkWell(
+                                  onTap: () => Navigator.pushNamed(
+                                      context, '/detailProduct',
+                                      arguments: value.products.product
+                                          .elementAt(index)),
+                                  child: ProductItems(
+                                    margin: 0,
+                                    productName: value.products.product
                                         .elementAt(index)
-                                        .productImage,
-                                productDesc: value.products.product
-                                    .elementAt(index)
-                                    .productDescription,
-                                price: "Rp " +
-                                    value.products.product
+                                        .productName,
+                                    productImage: BaseUrl.BASE_URL_IMAGE +
+                                        value.products.product
+                                            .elementAt(index)
+                                            .productImage,
+                                    productDesc: value.products.product
                                         .elementAt(index)
-                                        .price +
-                                    ",00",
-                                idProduct: value.products.product
-                                    .elementAt(index)
-                                    .idProduct,
-                              ),
-                            ))
+                                        .productDescription,
+                                    price: value.products.product
+                                        .elementAt(index)
+                                        .price,
+                                    idProduct: value.products.product
+                                        .elementAt(index)
+                                        .idProduct,
+                                  ),
+                                )),
+                      )
                     : Center(child: CircularProgressIndicator());
               })),
         ),

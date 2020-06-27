@@ -7,11 +7,17 @@ class Data {
   String image;
   String password;
   String type;
+  String email;
   String delete;
-
-  
-
- 
+  Data(
+      [this.idUsers,
+      this.name,
+      this.username,
+      this.phone,
+      this.address,
+      this.image,
+      this.email,
+     ]);
 
   Data.fromJson(Map<String, dynamic> json) {
     idUsers = json['id_users'];
@@ -23,6 +29,7 @@ class Data {
     password = json['password'];
     type = json['type'];
     delete = json['delete'];
+    email = json['email'];
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +43,7 @@ class Data {
     data['password'] = this.password;
     data['type'] = this.type;
     data['delete'] = this.delete;
+    data['email'] = this.email;
     return data;
   }
 }

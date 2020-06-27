@@ -39,7 +39,7 @@ class RowDetailOrder extends StatelessWidget {
                           style: TextStyle(fontSize: ScreenUtil().setSp(14))),
                       SizedBox(height: 5),
                       Text(
-                        '{$amountProduct} X IDR ${price}',
+                        '$amountProduct x IDR ${price}',
                         style: TextStyle(
                             color: Colors.red,
                             fontSize: ScreenUtil().setSp(14)),

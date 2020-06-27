@@ -28,7 +28,7 @@ class ListOrderItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.only(top: 5, right: 15, left: 15,bottom: 5),
+      margin: EdgeInsets.only(top: 5, right: 10, left: 10,bottom: 5),
       padding: EdgeInsets.all(15),
       height: ScreenUtil().setHeight(160),
       width: MediaQuery.of(context).size.width,
@@ -99,9 +99,9 @@ class ListOrderItems extends StatelessWidget {
                 Container(
                   child: Text(
                     status,
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(12)),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3,),
                   decoration:
                       BoxDecoration(color: Colors.grey.withOpacity(0.8)),
                 )

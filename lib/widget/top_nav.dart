@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TopNavbar extends StatelessWidget {
   final bool isVisible;
@@ -20,24 +21,30 @@ class TopNavbar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    '$productFound Product Found',
+                    '$productFound Produk Tersedia',
                     style: TextStyle(fontSize: 12),
                   ),
                   Row(
                     children: <Widget>[
-                      InkWell(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.import_export,
-                            size: 20,
-                          )),
-                      SizedBox(width: 10),
-                      GestureDetector(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.sort,
-                            size: 20,
-                          )),
+                      DropdownButton(
+                          underline: Container(),
+                          icon: Icon(Icons.sort),
+                          items: ['Kue Kering', 'Kue Basah']
+                              .map((e) => DropdownMenuItem(
+                                      child: Text(
+                                    e,
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(14)),
+                                  )))
+                              .toList(),
+                          value: null,
+                          onChanged: (val) {}),
+                      // InkWell(
+                      //     onTap: () {},
+                      //     child: Icon(
+                      //       Icons.import_export,
+                      //       size: 20,
+                      //     )),
                     ],
                   )
                 ],

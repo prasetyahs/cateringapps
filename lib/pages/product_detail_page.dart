@@ -2,6 +2,8 @@ import 'package:badges/badges.dart';
 import 'package:djcateringapps/model/cart/result.dart';
 import 'package:djcateringapps/model/cart/users_cart.dart';
 import 'package:djcateringapps/model/product/product.dart';
+import 'package:djcateringapps/model/product/products.dart';
+import 'package:djcateringapps/provider/detail_product_provider.dart';
 import 'package:djcateringapps/provider/index_provider.dart';
 import 'package:djcateringapps/repository/base_url.dart';
 import 'package:djcateringapps/widget/add_cart_dialog_content.dart';
@@ -85,14 +87,38 @@ class ProductDetailPage extends StatelessWidget {
                       actions: [
                         Container(
                           margin: EdgeInsets.only(right: 18),
-                          child: Badge(
-                            badgeColor: Colors.grey,
-                            badgeContent: Text("0",
-                                style: TextStyle(color: Colors.white)),
-                            position: BadgePosition.topRight(top: 5),
-                            child: Icon(
-                              Icons.shopping_cart,
-                              color: Colors.white,
+                          child: InkWell(
+                            onTap: () =>
+                                Navigator.pushNamed(context, '/cartPage'),
+                            child: Badge(
+                              badgeColor: Colors.grey,
+                              badgeContent: Consumer<IndexProvider>(
+                                builder: (context, value, child) {
+                                  return FutureBuilder(
+                                    future: value.users(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        value.readNumRowsCart(
+                                            snapshot.data.idUsers);
+
+                                        return Text(
+                                          value.numRowsCart.toString(),
+                                          style: TextStyle(color: Colors.white),
+                                        );
+                                      } else {
+                                        return Text("0",
+                                            style:
+                                                TextStyle(color: Colors.white));
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                              position: BadgePosition.topRight(top: 5),
+                              child: Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -196,18 +222,49 @@ class ProductDetailPage extends StatelessWidget {
                 SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 5),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 5,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => ProductItems(
-                            price: "10000",
-                            margin: 5,
-                            productName: "Hewew",
-                            idProduct: "1",
-                            productImage:
-                                "http://192.168.100.6/cateringapps/images/058C20200612.jpg",
-                          )),
+                  child: Consumer<DetailProductProvider>(
+                    builder: (context, value, child) => FutureBuilder<Products>(
+                      future:
+                          value.readProductUsingCategory(product.idCategory),
+                      builder: (context, snapshot) => snapshot.hasData
+                          ? NotificationListener<
+                              OverscrollIndicatorNotification>(
+                              onNotification: (val) {
+                                val.disallowGlow();
+                                return true;
+                              },
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.product.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) => InkWell(
+                                        onTap: () => Navigator.pushNamed(
+                                            context, '/detailProduct',
+                                            arguments: snapshot.data.product
+                                                .elementAt(index)),
+                                        child: ProductItems(
+                                          price: snapshot
+                                              .data.product[index].price,
+                                          margin: 5,
+                                          productName: snapshot
+                                              .data.product[index].productName,
+                                          idProduct: snapshot
+                                              .data.product[index].idProduct,
+                                          productImage: BaseUrl.BASE_URL_IMAGE +
+                                              snapshot.data.product[index]
+                                                  .productImage,
+                                          productDesc: snapshot
+                                              .data
+                                              .product[index]
+                                              .productDescription,
+                                        ),
+                                      )),
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                    ),
+                  ),
                   height: ScreenUtil().setHeight(260),
                   width: MediaQuery.of(context).size.width - 20,
                 )

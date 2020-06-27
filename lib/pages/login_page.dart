@@ -54,9 +54,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final responsive = ResponsiveLayout(context);
     responsive.responsiveSettings();
-
     return Scaffold(
-        resizeToAvoidBottomInset: false,
         body: Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
           alignment: Alignment.center,
@@ -66,8 +64,8 @@ class LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Image.asset(
                   'images/images2.png',
-                  width: ScreenUtil().setWidth(200),
-                  height: ScreenUtil().setHeight(200),
+                  width: ScreenUtil().setWidth(180),
+                  height: ScreenUtil().setHeight(180),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

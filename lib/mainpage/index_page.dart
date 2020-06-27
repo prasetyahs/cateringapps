@@ -39,7 +39,6 @@ class IndexPageState extends State<IndexPage> {
     ];
     return Scaffold(
         backgroundColor: Color.fromRGBO(240, 240, 240, 257),
-        resizeToAvoidBottomInset: false,
         body: listMenu.elementAt(_selectIndex),
         appBar: AppBar(
           elevation: 0,

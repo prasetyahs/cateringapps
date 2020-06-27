@@ -12,4 +12,15 @@ class ProductRepository {
       throw Exception('Failed to load');
     }
   }
+
+  Future<Products> readProductUsingCategory(String idCategory) async {
+    final response = await http.get(BaseUrl.BASE_URL +
+        'product/readProductUseCategory?id_category=' +
+        idCategory);
+    if (response.statusCode == 200) {
+      return Products.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load');
+    }
+  }
 }

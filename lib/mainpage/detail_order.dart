@@ -6,6 +6,7 @@ import 'package:djcateringapps/widget/row_detail_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
 
@@ -78,25 +79,32 @@ class DetailOrderState extends State<DetailOrder> {
           Container(
               width: MediaQuery.of(context).size.width,
               child: RaisedButton(
-                onPressed: () => orderbyuser.status == 'Diproses'
-                    ? null
-                    : showDialog(
+                onPressed: () {
+                  if (orderbyuser.status == "Diterima" ||
+                      orderbyuser.status == "Selesai") {
+                    return Fluttertoast.showToast(
+                        msg:
+                            "Order Kamu Masih Belum DiKonfirmasi atau Sudah Selesai",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  } else {
+                    return showDialog(
                         context: context,
                         child: ChangeNotifierProvider.value(
                             value: DetailOrderProvider(),
                             child: Dialog(
                                 child: DialogUploadImage(
                               idOrder: orderbyuser.orderNumber,
-                            )))),
-                child: Text(
-                    orderbyuser.status == "Diproses"
-                        ? "Menunggu"
-                        : 'Upload Bukti DP/Lunas',
+                            ))));
+                  }
+                },
+                child: Text('Upload Bukti DP/Lunas',
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(13), color: Colors.white)),
-                color: orderbyuser.status == "Diproses"
-                    ? Colors.green
-                    : Colors.red,
+                color: Colors.red,
               )),
         ]),
       )),
@@ -204,9 +212,7 @@ class DetailOrderState extends State<DetailOrder> {
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                           decoration: BoxDecoration(
-                              color: orderbyuser.status == "Diproses"
-                                  ? Colors.green
-                                  : Colors.red,
+                              color: Colors.red,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(50))),
                           child: Text(

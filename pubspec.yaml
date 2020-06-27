@@ -65,6 +65,8 @@ flutter:
     - images/register_img.png
     - images/thanks_you.png
     - images/not_found.png
+    - images/banner_1.png
+    - images/banner_2.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

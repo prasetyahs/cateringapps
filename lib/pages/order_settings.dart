@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:provider/provider.dart';
 
 class OrderSettings extends StatefulWidget {
@@ -22,6 +24,15 @@ class OrderSettingsState extends State<OrderSettings> {
 
   List<Widget> orderItems = [];
   double subTotal = 0;
+
+  List<DateTime> calculateDaysInterval(DateTime startDate, DateTime endDate) {
+    List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+    }
+    return days;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -126,35 +137,70 @@ class OrderSettingsState extends State<OrderSettings> {
                                         ));
                                     value.users().then((users) {
                                       usersCart.result.forEach((cartVal) {
-                                        if (cartVal.idCart != "") {
-                                          value.addOrder(
-                                              users.idUsers,
-                                              cartVal.idCart,
-                                              subTotal.toString(),
-                                              controllerDateText.text);
+                                        if (controllerDateText.text !=
+                                            "0000-00-00") {
+                                          if (cartVal.idCart != "") {
+                                            value
+                                                .addOrder(
+                                                    users.idUsers,
+                                                    cartVal.idCart,
+                                                    subTotal.toString(),
+                                                    controllerDateText.text)
+                                                .whenComplete(() {
+                                              Navigator.pop(context);
+                                              showDialog(
+                                                  barrierDismissible: false,
+                                                  context: context,
+                                                  child: Dialog(
+                                                    child: DialogInfo(),
+                                                  ));
+                                            });
+                                          } else {
+                                            value
+                                                .addCart(
+                                                    users.idUsers,
+                                                    cartVal.idProduct,
+                                                    cartVal.purchaseamount)
+                                                .then((val) {
+                                              value
+                                                  .addOrder(
+                                                      users.idUsers,
+                                                      val.idCart.toString(),
+                                                      subTotal.toString(),
+                                                      controllerDateText.text)
+                                                  .whenComplete(() {
+                                                Navigator.pop(context);
+                                                showDialog(
+                                                    barrierDismissible: false,
+                                                    context: context,
+                                                    child: Dialog(
+                                                      child: DialogInfo(),
+                                                    ));
+                                              });
+                                            });
+                                          }
                                         } else {
-                                          value
-                                              .addCart(
-                                                  users.idUsers,
-                                                  cartVal.idProduct,
-                                                  cartVal.purchaseamount)
-                                              .then((val) {
-                                            value.addOrder(
-                                              users.idUsers,
-                                              val.idCart.toString(),
-                                              subTotal.toString(),
-                                              controllerDateText.text);
-                                          });
+                                          Navigator.pop(context);
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Silahkan Masukkan Tanggal Permintaan Dengan Benar",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIosWeb: 1,
+                                              backgroundColor: Colors.black,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
                                         }
                                       });
                                     }).whenComplete(() {
-                                      Navigator.pop(context);
-                                      showDialog(
-                                        barrierDismissible: false,
-                                          context: context,
-                                          child: Dialog(
-                                            child: DialogInfo(),
-                                          ));
+                                      // Navigator.pop(context);
+
+                                      // showDialog(
+                                      //     barrierDismissible: false,
+                                      //     context: context,
+                                      //     child: Dialog(
+                                      //       child: DialogInfo(),
+                                      //     ));
                                     });
                                   },
                                   child: Text(
@@ -190,8 +236,21 @@ class OrderSettingsState extends State<OrderSettings> {
                         ],
                       ),
                       SizedBox(height: 5),
-                      Text(
-                        'RT.2/RW.7, Cipinang Muara, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta.',
+                      Consumer<IndexProvider>(
+                        builder: (context, value, child) => FutureBuilder(
+                            future: value.users(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  snapshot.data.address,
+                                );
+                              } else {
+                                return JumpingText(
+                                  '...',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                );
+                              }
+                            }),
                       )
                     ],
                   ),
@@ -228,8 +287,30 @@ class OrderSettingsState extends State<OrderSettings> {
                                       initialDate: DateTime.now(),
                                       firstDate: DateTime(2001),
                                       lastDate: DateTime(2222))
-                                  .then((value) => controllerDateText.text =
-                                      "${value.year}-${value.month}-${value.day}"),
+                                  .then((value) {
+                                int dateRange = calculateDaysInterval(
+                                        DateTime.now(),
+                                        value != null
+                                            ? value
+                                            : DateTime(0, 0, 0))
+                                    .length;
+
+                                if (dateRange >= 3) {
+                                  controllerDateText.text =
+                                      "${value.year}-${value.month}-${value.day}";
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Pemesanan Harus 3 hari dalam sebelum pengiriman",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.black,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                  controllerDateText.text = "0000-00-00";
+                                }
+                              }),
                             ))
                       ],
                     ),

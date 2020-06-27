@@ -25,24 +25,6 @@ class MyOderRow extends StatelessWidget {
       padding: EdgeInsets.all(2),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 2, left: 5, right: 5),
-                width: ScreenUtil().setWidth(15),
-                height: ScreenUtil().setHeight(15),
-                child: IconButton(
-                  padding: EdgeInsets.all(0),
-                  icon: Icon(
-                    Icons.close,
-                    size: 16,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
-          ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Row(
               children: [
@@ -77,48 +59,6 @@ class MyOderRow extends StatelessWidget {
                 )
               ],
             ),
-            Row(
-              children: [
-                Container(
-                    padding: EdgeInsets.all(4),
-                    child: Row(
-                      children: [
-                        Container(
-                            width: ScreenUtil().setWidth(40),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFe0f2f1)),
-                            child: FloatingActionButton(
-                                heroTag: null,
-                                backgroundColor: Colors.red,
-                                onPressed: () {},
-                                child: Text(
-                                  '+',
-                                  textAlign: TextAlign.center,
-                                ))),
-                        Container(
-                            width: ScreenUtil().setWidth(40),
-                            child: Text(
-                              amount,
-                              textAlign: TextAlign.center,
-                            )),
-                        Container(
-                            width: ScreenUtil().setWidth(40),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xFFe0f2f1)),
-                            child: FloatingActionButton(
-                                heroTag: null,
-                                backgroundColor: Colors.red,
-                                onPressed: () {},
-                                child: Text(
-                                  '-',
-                                  textAlign: TextAlign.center,
-                                ))),
-                      ],
-                    )),
-              ],
-            )
           ]),
         ],
       ),

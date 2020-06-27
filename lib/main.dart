@@ -9,6 +9,7 @@ import 'package:djcateringapps/pages/product_detail_page.dart';
 import 'package:djcateringapps/pages/register_page.dart';
 import 'package:djcateringapps/provider/cart_provider.dart';
 import 'package:djcateringapps/provider/detail_order_provider.dart';
+import 'package:djcateringapps/provider/detail_product_provider.dart';
 import 'package:djcateringapps/provider/index_provider.dart';
 import 'package:djcateringapps/provider/login_provider.dart';
 import 'package:djcateringapps/provider/register_provider.dart';
@@ -27,7 +28,6 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           accentColor: Colors.redAccent,
           primaryColor: Colors.red,
@@ -50,7 +50,13 @@ class MainApp extends StatelessWidget {
             value: CartProvider(), child: CartPage()),
         '/detailOrder': (context) => ChangeNotifierProvider.value(
             value: DetailOrderProvider(), child: DetailOrder()),
-        '/detailProduct': (context) => ProductDetailPage(),
+        '/detailProduct': (context) => MultiProvider(
+              providers: [
+                ChangeNotifierProvider.value(value: IndexProvider()),
+                ChangeNotifierProvider.value(value: DetailProductProvider()),
+              ],
+              child: ProductDetailPage(),
+            ),
         '/orderSettings': (context) => ChangeNotifierProvider.value(
               value: IndexProvider(),
               child: OrderSettings(),
