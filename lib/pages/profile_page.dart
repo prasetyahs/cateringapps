@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:djcateringapps/model/login/data.dart';
 import 'package:djcateringapps/provider/index_provider.dart';
-import 'package:djcateringapps/widget/info_dialog.dart';
+import 'package:djcateringapps/widget/dialog_edit_password.dart';
 import 'package:djcateringapps/widget/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,10 +44,10 @@ class ProfilePage extends StatelessWidget {
                                 BadgePosition.bottomRight(right: 5, bottom: 1),
                             badgeContent: InkWell(
                               onTap: () {},
-                              child: Icon(
+                              child: Container()/*Icon(
                                 Icons.photo_camera,
                                 color: Colors.white,
-                              ),
+                              ),*/
                             ),
                             child: ClipOval(
                               child: Image.network(
@@ -183,7 +183,15 @@ class ProfilePage extends StatelessWidget {
                                           15,
                                       child: FlatButton(
                                         color: Colors.red,
-                                        onPressed: () {},
+                                        onPressed: () => showDialog(
+                                            context: context,
+                                            child: Dialog(
+                                              child:
+                                                  ChangeNotifierProvider.value(
+                                                value: IndexProvider(),
+                                                child: DialogEditPassword(id: snapshot.data.idUsers,),
+                                              ),
+                                            )),
                                         child: Text(
                                           'Ubah Password',
                                           style: TextStyle(color: Colors.white),

@@ -1,5 +1,7 @@
+import 'package:djcateringapps/provider/index_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class TopNavbar extends StatelessWidget {
   final bool isVisible;
@@ -24,28 +26,33 @@ class TopNavbar extends StatelessWidget {
                     '$productFound Produk Tersedia',
                     style: TextStyle(fontSize: 12),
                   ),
-                  Row(
-                    children: <Widget>[
-                      DropdownButton(
-                          underline: Container(),
-                          icon: Icon(Icons.sort),
-                          items: ['Kue Kering', 'Kue Basah']
-                              .map((e) => DropdownMenuItem(
-                                      child: Text(
-                                    e,
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(14)),
-                                  )))
-                              .toList(),
-                          value: null,
-                          onChanged: (val) {}),
-                      // InkWell(
-                      //     onTap: () {},
-                      //     child: Icon(
-                      //       Icons.import_export,
-                      //       size: 20,
-                      //     )),
-                    ],
+                  Consumer<IndexProvider>(
+                    builder: (context, value, child) => Row(
+                      children: <Widget>[
+                        DropdownButton(
+                            underline: Container(),
+                            icon: Icon(Icons.sort),
+                            items: ['Kue Kering', 'Kue Basah']
+                                .map((e) => DropdownMenuItem(
+                                        child: Text(
+                                      e,
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(14)),
+                                    )))
+                                .toList(),
+                            value: null,
+                            onChanged: (val) {
+                              value.sortCategory();
+                              
+                            }),
+                        // InkWell(
+                        //     onTap: () {},
+                        //     child: Icon(
+                        //       Icons.import_export,
+                        //       size: 20,
+                        //     )),
+                      ],
+                    ),
                   )
                 ],
               ))),

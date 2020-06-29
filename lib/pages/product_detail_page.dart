@@ -12,65 +12,103 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Product product = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
         backgroundColor: Color.fromRGBO(240, 240, 240, 257),
         bottomNavigationBar: BottomAppBar(
             elevation: 10.0,
             child: Container(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                            icon: Icon(Icons.add_shopping_cart),
-                            onPressed: () => showDialog(
-                                context: context,
-                                child: Dialog(
-                                    child: ChangeNotifierProvider.value(
-                                        value: IndexProvider(),
-                                        child: AddCartDialogContent(
-                                          productName: product.productName,
-                                          productPrice: product.price,
-                                          idProduct: product.idProduct,
-                                          imageContent: BaseUrl.BASE_URL_IMAGE +
-                                              product.productImage,
-                                        ))))),
-                        Container(
-                          width: ScreenUtil().setWidth(330),
-                          child: FlatButton(
-                            color: Colors.red,
-                            onPressed: () {
-                              List<Result> listProduct = [];
-                              listProduct.add(new Result(
-                                  idCart: "",
-                                  idProduct: product.idProduct,
-                                  productName: product.productName,
-                                  price: product.price,
-                                  productImage: product.productImage,
-                                  purchaseamount: "1",
-                                  isOrder: "1"));
-                              UsersCart usersCart =
-                                  UsersCart(result: listProduct);
-                              Navigator.pushNamed(context, "/orderSettings",
-                                  arguments: usersCart);
-                            },
-                            child: Text(
-                              'Beli',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ]),
+              child: Consumer<IndexProvider>(builder: (context, value, child) {
+                return FutureBuilder(
+                    future: value.users(),
+                    builder: (context, snapshot) {
+                      return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.add_shopping_cart),
+                                    onPressed: () => snapshot.data.address != ""
+                                        ? showDialog(
+                                            context: context,
+                                            child: Dialog(
+                                                child: ChangeNotifierProvider
+                                                    .value(
+                                                        value: IndexProvider(),
+                                                        child:
+                                                            AddCartDialogContent(
+                                                          productName: product
+                                                              .productName,
+                                                          productPrice:
+                                                              product.price,
+                                                          idProduct:
+                                                              product.idProduct,
+                                                          imageContent: BaseUrl
+                                                                  .BASE_URL_IMAGE +
+                                                              product
+                                                                  .productImage,
+                                                        ))))
+                                        : Fluttertoast.showToast(
+                                            msg:
+                                                "Silahkan Lengkapi Data Pendaftaran Di Halaman Akun !",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.black,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0)),
+                                Container(
+                                  width: ScreenUtil().setWidth(330),
+                                  child: FlatButton(
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      if (snapshot.data.address != "") {
+                                        List<Result> listProduct = [];
+                                        listProduct.add(new Result(
+                                            idCart: "",
+                                            idProduct: product.idProduct,
+                                            productName: product.productName,
+                                            price: product.price,
+                                            productImage: product.productImage,
+                                            purchaseamount: "1",
+                                            isOrder: "1"));
+                                        UsersCart usersCart =
+                                            UsersCart(result: listProduct);
+                                        Navigator.pushNamed(
+                                            context, "/orderSettings",
+                                            arguments: usersCart);
+                                      }else{
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Silahkan Lengkapi Data Pendaftaran Di Halaman Akun !",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.black,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      }
+                                    },
+                                    child: Text(
+                                      'Beli',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ]);
+                    });
+              }),
               height: ScreenUtil().setHeight(60),
             )),
         body: NestedScrollView(

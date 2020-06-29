@@ -2,6 +2,7 @@ import 'package:djcateringapps/provider/index_provider.dart';
 import 'package:djcateringapps/widget/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
@@ -194,6 +195,15 @@ class AddCartDialogContent extends StatelessWidget {
                                         value.purchaseAmount)
                                     .then((val) => Navigator.pop(context));
                               });
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Silahkan Masukkan Jumlah Beli",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.black,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
                             }
                           },
                         )))

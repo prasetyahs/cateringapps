@@ -36,6 +36,17 @@ class IndexProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void sortCategory(){
+    notifyListeners();
+  }
+
+  Future<PostResponse> editPassword(
+      String id, String newPassword, String p_password) async {
+    PostResponse postResponse =
+        await _usersRepository.editPassword(id, newPassword, p_password);
+    return postResponse;
+  }
+
   Future<Order> addOrder(String idUsers, String idCart, String totalOrder,
       String dateRequest) async {
     Order order = await _orderRepository.addOrder(

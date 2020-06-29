@@ -59,4 +59,23 @@ class UsersRepository {
       throw Exception(err);
     }
   }
+
+  Future<PostResponse> editPassword(
+      String id, String newPassword, String p_password) async {
+    try {
+      final response = await http.post(BaseUrl.BASE_URL + '/login/editPassword',
+          body: {
+            'p_password': p_password,
+            'id_users': id,
+            'new_password': newPassword
+          });
+      if (response.statusCode == 200) {
+        return PostResponse.fromJson(convert.jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load');
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
 }

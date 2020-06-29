@@ -84,7 +84,7 @@ class LandingPageState extends State<LandingPage> {
                       Navigator.pushNamed(context, '/registerPage'),
                   color: Colors.redAccent,
                   child: Text(
-                    "SIGN UP",
+                    "DAFTAR",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

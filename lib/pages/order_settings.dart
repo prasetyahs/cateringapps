@@ -130,15 +130,15 @@ class OrderSettingsState extends State<OrderSettings> {
                               return FlatButton(
                                   color: Colors.red,
                                   onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        child: Dialog(
-                                          child: LoadingDialog(),
-                                        ));
                                     value.users().then((users) {
-                                      usersCart.result.forEach((cartVal) {
-                                        if (controllerDateText.text !=
-                                            "0000-00-00") {
+                                      showDialog(
+                                          context: context,
+                                          child: Dialog(
+                                            child: LoadingDialog(),
+                                          ));
+                                      if (controllerDateText.text !=
+                                          "0000-00-00") {
+                                        usersCart.result.forEach((cartVal) {
                                           if (cartVal.idCart != "") {
                                             value
                                                 .addOrder(
@@ -179,28 +179,19 @@ class OrderSettingsState extends State<OrderSettings> {
                                               });
                                             });
                                           }
-                                        } else {
-                                          Navigator.pop(context);
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "Silahkan Masukkan Tanggal Permintaan Dengan Benar",
-                                              toastLength: Toast.LENGTH_LONG,
-                                              gravity: ToastGravity.BOTTOM,
-                                              timeInSecForIosWeb: 1,
-                                              backgroundColor: Colors.black,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0);
-                                        }
-                                      });
-                                    }).whenComplete(() {
-                                      // Navigator.pop(context);
-
-                                      // showDialog(
-                                      //     barrierDismissible: false,
-                                      //     context: context,
-                                      //     child: Dialog(
-                                      //       child: DialogInfo(),
-                                      //     ));
+                                        });
+                                      } else {
+                                        Navigator.pop(context);
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Silahkan Masukkan Tanggal Permintaan Dengan Benar",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.black,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      }
                                     });
                                   },
                                   child: Text(
